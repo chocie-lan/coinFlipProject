@@ -13,7 +13,7 @@ public class Server {
             InputStreamReader inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String inputMsg = bufferedReader.readLine();
-            System.out.println("Server recieved message from client");
+            System.out.println("Server recieved: "+ inputMsg);
 
             PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
             printWriter.println("Message from server");
