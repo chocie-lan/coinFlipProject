@@ -14,7 +14,7 @@ public class Server {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String inputMsg = bufferedReader.readLine();
             System.out.println("Server recieved: "+ inputMsg);
-
+            
             PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
             printWriter.println("Message from server");
             System.out.println("Message sent to client");

@@ -13,6 +13,19 @@ public class Controller {
             printWriter.println("Client test");
             System.out.println("Client sent message to server");
 
+            //Dummy code for requesting a coin flip
+            for(int i =0; i < 5; i++){
+                printWriter.println("flipCoin");
+                System.out.println("Coin flip requested");
+                try {
+                    Thread.sleep(2000); // Pause for 2 seconds
+                } catch (InterruptedException e) {
+                    // Handle the exception if the sleep is interrupted
+                    e.printStackTrace();
+                }
+            }
+
+
             InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String inputMsg = bufferedReader.readLine();
