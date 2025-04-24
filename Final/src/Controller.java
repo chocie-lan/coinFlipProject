@@ -19,9 +19,19 @@ public class Controller {
 
             InputStreamReader inputStreamReader1 = new InputStreamReader(System.in);
             BufferedReader bufferedReader1 = new BufferedReader(inputStreamReader1);
+            String contUserName;
+            String contPassword;
             String bet;
             String amount;
             int amountInt;
+
+            System.out.println("Enter your username: ");
+            contUserName = bufferedReader1.readLine();
+            System.out.println(contUserName);
+
+            System.out.println("Enter your password: ");
+            contPassword = bufferedReader1.readLine();
+            System.out.println(contPassword);
 
             for(int i =0; i < 5; i++){
                 System.out.println("Heads or Tails?");

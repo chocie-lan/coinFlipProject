@@ -16,14 +16,27 @@ public class Model {
     }
     public void createTable(){
         //ADD A TABLE
-        String cmd = "CREATE TABLE IF NOT EXISTS userData(userID INTEGER PRIMARY KEY,"+
+        String create = "CREATE TABLE IF NOT EXISTS userData(userID INTEGER PRIMARY KEY,"+
                 "username TEXT NOT NULL,"+
                 "password TEXT NOT NULL);";
         try(Statement statement = connection.createStatement()){
-            statement.execute(cmd);
+            statement.execute(create);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+    //ADD USER
+    public void addUser(String newName, String newPassword){
+        String newUser = String.format("INSERT INTO userData(username, password) VALUES('%s','%s');", newName, newPassword);
+        try(Statement statement= connection.createStatement()){
+            statement.execute(newUser);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //SEARCH FOR USER
+    public void searchUser(){
 
     }
 

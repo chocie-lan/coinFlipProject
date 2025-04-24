@@ -9,6 +9,9 @@ public class Server {
         System.out.println("server started on port: "+ serverSocket.getLocalPort());
         model = new Model();
         model.createTable();
+        String userName = "user1"; //will be passed from controller (which gets it from view)
+        String password = "password123";
+        model.addUser(userName, password);
         while (true){
             Socket clientSocket = serverSocket.accept();
             System.out.println("Client connected "+ clientSocket.getPort());
