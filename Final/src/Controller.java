@@ -19,16 +19,41 @@ public class Controller {
 
             InputStreamReader inputStreamReader1 = new InputStreamReader(System.in);
             BufferedReader bufferedReader1 = new BufferedReader(inputStreamReader1);
+
             String bet;
             String amount;
-            int amountInt;
+            int amountInt = 0;
 
+            //Loop for login
+            while(true) {
+                System.out.println("Username:");
+                String username = bufferedReader1.readLine();
+                System.out.println("Password");
+                String password = bufferedReader1.readLine();
+
+                printWriter.println(username);
+                printWriter.println(password);
+
+                String verify = bufferedReader.readLine();
+                if (verify.equals("failed")) {
+                    System.out.println("Incorrect username and password!");
+
+                } else if (verify.equals("success")){
+                    break;
+                }
+            }
+
+            //loop for gameplay
             for(int i =0; i < 5; i++){
                 System.out.println("Heads or Tails?");
                 bet = bufferedReader1.readLine();
                 System.out.println("Amount: ");
                 amount = bufferedReader1.readLine();
-                amountInt = Integer.parseInt(amount);
+                try {
+                    amountInt = Integer.parseInt(amount);
+                } catch (NumberFormatException e) {
+                    System.out.println(e);
+                }
 
                 printWriter.println("flipCoin");
                 System.out.println("Coin flip requested");
