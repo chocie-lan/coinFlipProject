@@ -19,28 +19,41 @@ public class Controller {
 
             InputStreamReader inputStreamReader1 = new InputStreamReader(System.in);
             BufferedReader bufferedReader1 = new BufferedReader(inputStreamReader1);
-            String contUserName;
-            String contPassword;
+
             String bet;
             String amount;
-            int amountInt;
+            int amountInt = 0;
 
-            System.out.println("Enter your username: ");
-            contUserName = bufferedReader1.readLine();
-            System.out.println(contUserName);
-            printWriter.println(contUserName);
+            //Loop for login
+            while(true) {
+                System.out.println("Username:");
+                String username = bufferedReader1.readLine();
+                System.out.println("Password");
+                String password = bufferedReader1.readLine();
 
-            System.out.println("Enter your password: ");
-            contPassword = bufferedReader1.readLine();
-            System.out.println(contPassword);
-            printWriter.println(contPassword);
+                printWriter.println(username);
+                printWriter.println(password);
 
+                String verify = bufferedReader.readLine();
+                if (verify.equals("failed")) {
+                    System.out.println("Incorrect username and password!");
+
+                } else if (verify.equals("success")){
+                    break;
+                }
+            }
+
+            //loop for gameplay
             for(int i =0; i < 5; i++){
                 System.out.println("Heads or Tails?");
                 bet = bufferedReader1.readLine();
                 System.out.println("Amount: ");
                 amount = bufferedReader1.readLine();
-                amountInt = Integer.parseInt(amount);
+                try {
+                    amountInt = Integer.parseInt(amount);
+                } catch (NumberFormatException e) {
+                    System.out.println(e);
+                }
 
                 printWriter.println("flipCoin");
                 System.out.println("Coin flip requested");
