@@ -9,9 +9,10 @@ public class Server {
         System.out.println("server started on port: "+ serverSocket.getLocalPort());
         model = new Model();
         model.createTable();
-        String userName = "user1"; //will be passed from controller (which gets it from view)
+        String userName = "myUser12"; //will be passed from controller (which gets it from view)
         String password = "password123";
         model.addUser(userName, password);
+
         while (true){
             Socket clientSocket = serverSocket.accept();
             System.out.println("Client connected "+ clientSocket.getPort());
@@ -22,16 +23,24 @@ public class Server {
 
             String input;
             while(true){
+                userName = null;
+                password = null;
                 input = bufferedReader.readLine();
                 if(input != null){
                     String out;
-                    double flip = Math.random();
-                    if(flip >= 0.5){
-                        out = "heads";
-                    } else {
-                        out = "tails";
+                    if(input.equals("flipCoin")){
+                        double flip = Math.random();
+                        if(flip >= 0.5){
+                            out = "heads";
+                        } else {
+                            out = "tails";
+                        }
+                        printWriter.println(out);
                     }
-                    printWriter.println(out);
+
+
+
+
                     input = null;
                 }
             }
