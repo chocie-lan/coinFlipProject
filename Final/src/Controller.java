@@ -71,6 +71,8 @@ public class Controller {
                 }
 
                 System.out.println("Balance = "+ balance);
+                printWriter.println(balance);
+
                 try {
                     Thread.sleep(1000); // Pause for 1 second
                 } catch (InterruptedException e) {
@@ -85,4 +87,5 @@ public class Controller {
             throw new RuntimeException(e);
         }
     }
+
 }
