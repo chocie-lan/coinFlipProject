@@ -32,7 +32,7 @@ public class Controller {
                 String password = bufferedReader1.readLine();
 
                 printWriter.println(username);
-                printWriter.println(password);
+                printWriter.println(password); //once this happens, check the arrau
 
                 String verify = bufferedReader.readLine();
                 if (verify.equals("failed")) {
@@ -44,7 +44,7 @@ public class Controller {
             }
 
             //loop for gameplay
-            for(int i =0; i < 5; i++){
+            for(int i =0; i < 2; i++){
                 System.out.println("Heads or Tails?");
                 bet = bufferedReader1.readLine();
                 System.out.println("Amount: ");

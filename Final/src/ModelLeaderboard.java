@@ -2,8 +2,10 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class ModelLeaderboard {
-    private String username = "Bob";
-    private String password = "Password";
+   // private String username = "Bob";
+    //private String password = "Password";
+    private String username;
+    private String password;
     private Connection connection;
 
     public ModelLeaderboard(){

@@ -14,7 +14,10 @@ public class Server {
         modelUser.createTable();
         String username = "user1"; //will be passed from controller (which gets it from view)
         String password = "password123";
-        modelUser.addUser(username, password);
+        modelUser.searchUser(username, password);
+       // modelUser.readUserTable(username, password);
+
+        //modelUser.addUser(username, password);
 
         //test leaderboard
         leaderboard.createLeaderboardTable();
@@ -24,9 +27,12 @@ public class Server {
         leaderboard.deleteLeaderboard("bob");
         ArrayList<String> arrayList;
         arrayList = leaderboard.readLeaderboard();
+        /*
         for(String s : arrayList){
             System.out.println(s);
         }
+
+         */
 
         while (true){
             Socket clientSocket = serverSocket.accept();
