@@ -1,3 +1,5 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,6 +10,7 @@ import java.util.Objects;
 
 public class Controller {
     private int balance = 100;
+    static PrintWriter printWriter;
 
     public void start() {
         try (Socket socket = new Socket("localhost", 5000)) {
@@ -15,7 +18,7 @@ public class Controller {
 
             InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
 
             InputStreamReader inputStreamReader1 = new InputStreamReader(System.in);
             BufferedReader bufferedReader1 = new BufferedReader(inputStreamReader1);
@@ -85,6 +88,33 @@ public class Controller {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+
+    private static class loginButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            System.out.println("LOGIN BUTTON CLICKED");
+            //check user entry
+            //go to game
+        }
+    }
+
+    private static class createAccountButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            System.out.println("CREATE ACCOUNT BUTTON CLICKED");
+            //go to game
+        }
+    }
+
+    private static class coinFlipActionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+           // if(!<class>.<textboxName>.gettext().isEmpty() && !<class>.<textboxName>.getText().isEmpty()){ //they can only flip the coin if they have entered something in both bet amount and guess}
+            System.out.println("FLIPPING COIN");
+            printWriter.println("flipCoin"); //pass socket as an argument?
         }
     }
 
