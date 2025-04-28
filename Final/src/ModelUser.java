@@ -67,6 +67,7 @@ public class ModelUser {
             if(s.equals(checkString)){
                 System.out.println("Logging you in");
                 userFound = true;
+                break;
             }
         }
         if(!userFound){

@@ -8,10 +8,14 @@ import java.util.Objects;
 
 public class Controller {
     private int balance = 100;
+    private View view;
 
     public void start() {
         try (Socket socket = new Socket("localhost", 5000)) {
             System.out.println("Connected to: " + socket.getPort());
+
+            view = new View();
+            view.initializeGUI();
 
             InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -26,10 +30,11 @@ public class Controller {
 
             //Loop for login
             while(true) {
-                System.out.println("Username:");
-                String username = bufferedReader1.readLine();
-                System.out.println("Password");
-                String password = bufferedReader1.readLine();
+//                System.out.println("Username:");
+//                String username = bufferedReader1.readLine();
+//                System.out.println("Password");
+//                String password = bufferedReader1.readLine();
+                String username = view.
 
                 printWriter.println(username);
                 printWriter.println(password);
