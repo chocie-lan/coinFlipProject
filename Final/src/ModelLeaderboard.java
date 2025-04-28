@@ -2,10 +2,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class ModelLeaderboard {
-   // private String username = "Bob";
-    //private String password = "Password";
-    private String username;
-    private String password;
     private Connection connection;
 
     public ModelLeaderboard(){
@@ -30,12 +26,12 @@ public class ModelLeaderboard {
         }
     }
 
-    public void updateLeaderboard(String name, int score){
-        String cmd = "UPDATE leaderboard SET score = ? WHERE name = ?;";
+    public void updateLeaderboard(int id, int score){
+        String cmd = "UPDATE leaderboard SET score = ? WHERE id = ?;";
 
         try(PreparedStatement preparedStatement = connection.prepareStatement(cmd)) {
             preparedStatement.setInt(1, score);
-            preparedStatement.setString(2,name);
+            preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -61,11 +57,11 @@ public class ModelLeaderboard {
         }
     }
 
-    public void deleteLeaderboard(String name){
-        String cmd = "DELETE FROM leaderboard WHERE name = ?";
+    public void deleteLeaderboard(int id){
+        String cmd = "DELETE FROM leaderboard WHERE id = ?";
 
         try(PreparedStatement preparedStatement = connection.prepareStatement(cmd)) {
-            preparedStatement.setString(1, name);
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -82,13 +78,6 @@ public class ModelLeaderboard {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public String getUsername() {
-        return username;
-    }
-    public String getPassword() {
-        return password;
     }
 }
 

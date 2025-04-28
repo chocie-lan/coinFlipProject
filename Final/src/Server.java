@@ -4,6 +4,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
+    private static int userId = 1;
+
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(5000);
         System.out.println("server started on port: "+ serverSocket.getLocalPort());
@@ -11,29 +13,25 @@ public class Server {
         ModelLeaderboard leaderboard = new ModelLeaderboard();
         ModelUser modelUser = new ModelUser();
 
+        //test user
         modelUser.createTable();
         String username = "user1"; //will be passed from controller (which gets it from view)
         String password = "password123";
-        modelUser.searchUser(username, password);
-       // modelUser.readUserTable(username, password);
+        modelUser.addUser(username, password);
 
-        //modelUser.addUser(username, password);
-
+        /*
         //test leaderboard
         leaderboard.createLeaderboardTable();
-        leaderboard.createLeaderboard("joe", 0);
-        leaderboard.createLeaderboard("bob", 0);
-        leaderboard.updateLeaderboard("joe", 10);
-        leaderboard.deleteLeaderboard("bob");
+        leaderboard.createLeaderboard("user1", 0);
+        //leaderboard.createLeaderboard("bob", 0);
+        leaderboard.updateLeaderboard(1, 10);
+        leaderboard.deleteLeaderboard(2);
         ArrayList<String> arrayList;
         arrayList = leaderboard.readLeaderboard();
-        /*
         for(String s : arrayList){
             System.out.println(s);
         }
-
-         */
-
+*/
         while (true){
             Socket clientSocket = serverSocket.accept();
             System.out.println("Client connected "+ clientSocket.getPort());
@@ -50,16 +48,45 @@ public class Server {
 
                 if(!username.equals(checkUser) && !password.equals(checkPass)) {
                     printWriter.println("failed");
-                } else {
+
+                }else {
                     printWriter.println("success");
                     break;
                 }
+            }
+
+            int id = 0;
+            int score;
+            //grab user for leaderboard
+            ArrayList<String> leaderboardPeople;
+            leaderboardPeople = leaderboard.readLeaderboard();
+            for(String s : leaderboardPeople){
+                String[] person = s.trim().split("\\s+");
+                String name = null;
+                try {
+                    id = Integer.parseInt(person[0]);
+                    name = person[1];
+                    score = Integer.parseInt(person[2]);
+                } catch (NumberFormatException e) {
+                    System.out.println(e);
+                }
+                if(name.equals(username)){
+                    break;
+                }
+
             }
 
             //loop for gameplay
             String input;
             while (true) {
                 input = bufferedReader.readLine();
+
+                if(input != null && !input.equals("flipCoin")){
+                    int bal = Integer.parseInt(input);
+                    System.out.println(bal);
+                    leaderboard.updateLeaderboard(id,bal);
+                }
+
                 if (input != null) {
                     String out;
                     double flip = Math.random();
