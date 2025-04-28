@@ -2,8 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class View {
-    private JFrame jframe;
-    private JPanel jPanel;
+    private JFrame jFrame;
+    private JTabbedPane jTabs;
+    private JPanel loginPanel;
+    private JPanel gamePanel;
 
     private JTextField username;
     private JTextField password;
@@ -13,43 +15,45 @@ public class View {
     private JButton coin;
     private JLabel coinState;
     private JTextField betAmount;
+    private JLabel bet;
     private JLabel balance;
 
     public View(){
-        jframe = new JFrame();
-        jPanel = new JPanel();
+        jFrame = new JFrame();
+        jTabs = new JTabbedPane();
+        loginPanel = new JPanel();
+        gamePanel  = new JPanel();
 
         username = new JTextField(10);
         password = new JTextField(10);
         login = new JLabel("Enter username and password");
         loginButton = new JButton("Login!");
 
-        coin = new JButton();
-        coinState = new JLabel();
-        betAmount = new JTextField();
-        balance = new JLabel("Balance: ");
+        coin = new JButton("Flip Coin!");
+        coinState = new JLabel("Coin Hasn't Been Flipped");
+        bet = new JLabel("Enter bet amount:");
+        betAmount = new JTextField(10);
+        balance = new JLabel("Current Balance: ");
     }
 
     public void initializeGUI(){
-        jPanel.add(username);
-        jPanel.add(password);
+        loginPanel.add(username);
+        loginPanel.add(password);
+        loginPanel.add(loginButton);
+        loginPanel.add(login);
 
-        jframe.add(jPanel, BorderLayout.NORTH);
-        jframe.add(login, BorderLayout.SOUTH);
-        jframe.add(loginButton, BorderLayout.CENTER);
+        gamePanel.add(coin);
+        gamePanel.add(coinState);
+        gamePanel.add(bet);
+        gamePanel.add(betAmount);
+        gamePanel.add(balance);
 
-        jframe.setSize(500,500);
-        jframe.setVisible(true);
-    }
+        jTabs.add("Login", loginPanel);
+        jTabs.add("Game", gamePanel);
 
-    public void initializeGame(){
-        jframe.remove(jPanel);
-        jframe.remove(login);
-        jframe.remove(loginButton);
-
-        jframe.add(coin, BorderLayout.CENTER);
-        jframe.add(betAmount, BorderLayout.NORTH);
-        jframe.add(balance, BorderLayout.SOUTH);
+        jFrame.add(jTabs);
+        jFrame.setSize(500,500);
+        jFrame.setVisible(true);
     }
 
     public String getUsernameText(){

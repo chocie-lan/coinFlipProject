@@ -30,11 +30,12 @@ public class Controller {
 
             //Loop for login
             while(true) {
-//                System.out.println("Username:");
-//                String username = bufferedReader1.readLine();
-//                System.out.println("Password");
-//                String password = bufferedReader1.readLine();
-                String username = view.
+                System.out.println("Username:");
+                String username = bufferedReader1.readLine();
+                System.out.println("Password");
+                String password = bufferedReader1.readLine();
+                //String username = view.getUsernameText();
+                //String password = view.getPasswordText();
 
                 printWriter.println(username);
                 printWriter.println(password);
