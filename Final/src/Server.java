@@ -19,6 +19,7 @@ public class Server {
         String password = "password123";
         modelUser.addUser(username, password);
 
+        /*
         //test leaderboard
         leaderboard.createLeaderboardTable();
         leaderboard.createLeaderboard("user1", 0);
@@ -30,7 +31,7 @@ public class Server {
         for(String s : arrayList){
             System.out.println(s);
         }
-
+*/
         while (true){
             Socket clientSocket = serverSocket.accept();
             System.out.println("Client connected "+ clientSocket.getPort());
