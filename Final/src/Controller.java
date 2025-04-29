@@ -1,5 +1,3 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,17 +8,18 @@ import java.util.Objects;
 
 public class Controller {
     private int balance = 100;
-    static PrintWriter printWriter;
-    private static View view;
+    private View view;
 
     public void start() {
-        //this.view = view;
         try (Socket socket = new Socket("localhost", 5000)) {
             System.out.println("Connected to: " + socket.getPort());
 
+            view = new View();
+            view.initializeGUI();
+
             InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            printWriter = new PrintWriter(socket.getOutputStream(), true);
+            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
 
             InputStreamReader inputStreamReader1 = new InputStreamReader(System.in);
             BufferedReader bufferedReader1 = new BufferedReader(inputStreamReader1);
@@ -35,9 +34,11 @@ public class Controller {
                 String username = bufferedReader1.readLine();
                 System.out.println("Password");
                 String password = bufferedReader1.readLine();
+                //String username = view.getUsernameText();
+                //String password = view.getPasswordText();
 
                 printWriter.println(username);
-                printWriter.println(password); //once this happens, check the arrau
+                printWriter.println(password);
 
                 String verify = bufferedReader.readLine();
                 if (verify.equals("failed")) {
@@ -49,7 +50,7 @@ public class Controller {
             }
 
             //loop for gameplay
-            for(int i =0; i < 2; i++){
+            for(int i =0; i < 5; i++){
                 System.out.println("Heads or Tails?");
                 bet = bufferedReader1.readLine();
                 System.out.println("Amount: ");
@@ -90,34 +91,6 @@ public class Controller {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-
-    private static class loginButtonListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e){
-            System.out.println("LOGIN BUTTON CLICKED");
-            //check user entry
-            //go to game
-        }
-    }
-
-    private static class createAccountButtonListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e){
-            System.out.println("CREATE ACCOUNT BUTTON CLICKED");
-            //go to game
-        }
-    }
-
-    private static class coinFlipActionListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (!view.username.gettext().isEmpty() && !view.password.getText().isEmpty()) { //they can only flip the coin if they have entered something in both bet amount and guess}
-                System.out.println("FLIPPING COIN");
-                printWriter.println("flipCoin"); //pass socket as an argument?
-            }
         }
     }
 

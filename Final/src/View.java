@@ -2,15 +2,66 @@ import javax.swing.*;
 import java.awt.*;
 
 public class View {
-    private ViewLogin viewLogin;
-    private CardLayout cardLayout;
-    private JPanel jPanel;
+    private JFrame jFrame;
+    private JTabbedPane jTabs;
+    private JPanel loginPanel;
+    private JPanel gamePanel;
+
+    private JTextField username;
+    private JTextField password;
+    private JLabel login;
+    private JButton loginButton;
+
+    private JButton coin;
+    private JLabel coinState;
+    private JTextField betAmount;
+    private JLabel bet;
+    private JLabel balance;
 
     public View(){
-        viewLogin = new ViewLogin();
-        cardLayout = new CardLayout();
-        jPanel = new JPanel(cardLayout);
+        jFrame = new JFrame();
+        jTabs = new JTabbedPane();
+        loginPanel = new JPanel();
+        gamePanel  = new JPanel();
+
+        username = new JTextField(10);
+        password = new JTextField(10);
+        login = new JLabel("Enter username and password");
+        loginButton = new JButton("Login!");
+
+        coin = new JButton("Flip Coin!");
+        coinState = new JLabel("Coin Hasn't Been Flipped");
+        bet = new JLabel("Enter bet amount:");
+        betAmount = new JTextField(10);
+        balance = new JLabel("Current Balance: ");
     }
 
+    public void initializeGUI(){
+        loginPanel.add(username);
+        loginPanel.add(password);
+        loginPanel.add(loginButton);
+        loginPanel.add(login);
+
+        gamePanel.add(coin);
+        gamePanel.add(coinState);
+        gamePanel.add(bet);
+        gamePanel.add(betAmount);
+        gamePanel.add(balance);
+
+        jTabs.add("Login", loginPanel);
+        jTabs.add("Game", gamePanel);
+
+        jFrame.add(jTabs);
+        jFrame.setSize(500,500);
+        jFrame.setVisible(true);
+    }
+
+    public String getUsernameText(){
+        return username.getText();
+    }
+
+    public String getPasswordText(){
+        return password.getText();
+    }
 
 }
