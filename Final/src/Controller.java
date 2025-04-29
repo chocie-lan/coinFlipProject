@@ -11,8 +11,10 @@ import java.util.Objects;
 public class Controller {
     private int balance = 100;
     static PrintWriter printWriter;
+    private static View view;
 
     public void start() {
+        //this.view = view;
         try (Socket socket = new Socket("localhost", 5000)) {
             System.out.println("Connected to: " + socket.getPort());
 
@@ -111,10 +113,11 @@ public class Controller {
 
     private static class coinFlipActionListener implements ActionListener{
         @Override
-        public void actionPerformed(ActionEvent e){
-           // if(!<class>.<textboxName>.gettext().isEmpty() && !<class>.<textboxName>.getText().isEmpty()){ //they can only flip the coin if they have entered something in both bet amount and guess}
-            System.out.println("FLIPPING COIN");
-            printWriter.println("flipCoin"); //pass socket as an argument?
+        public void actionPerformed(ActionEvent e) {
+            if (!view.username.gettext().isEmpty() && !view.password.getText().isEmpty()) { //they can only flip the coin if they have entered something in both bet amount and guess}
+                System.out.println("FLIPPING COIN");
+                printWriter.println("flipCoin"); //pass socket as an argument?
+            }
         }
     }
 
