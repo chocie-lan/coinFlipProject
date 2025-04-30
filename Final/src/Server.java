@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Server {
@@ -49,18 +50,31 @@ public class Server {
                 System.out.println(checkUser);
                 ArrayList<String>users;
                 users = modelUser.readUserTable();
-                String verifyUser = String.format("%10s %10s",checkUser, checkPass);
+                String verifyUser = String.format("%10s %10s",checkUser, checkPass); //change to
+                //String verifyUser = checkUser + " "+ checkPass;
+                boolean userFound = false;
                 for(String s : users){
                     System.out.println(s);
+                    String userNameCheck = Arrays.toString(s.split(" "));
+                    System.out.println("Username only: "+userNameCheck);
                     if(s.equals(verifyUser)){
                         System.out.println("Welcome back!");
+                        userFound = true;
                         break;
                         //go to game window
-                    }else {
+                    } else if (s.contains(checkUser) && !s.contains(checkPass)) {
+                        System.out.println("found matching username");
+                        //ask them to retry their password(if login was clicked)
+                        //or tell them username exists (if sign up was clicked)
+                    }
+
+                    else {
                         continue;
                     }
                 }
-                System.out.println("Cannot find your account, please sign up");
+                if(userFound){
+                    System.out.println("Cannot find your account, please sign up");
+                }
 
             }
 

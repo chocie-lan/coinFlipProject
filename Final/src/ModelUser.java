@@ -51,6 +51,7 @@ public class ModelUser {
                 String name = rs.getString("username");
                 String password = rs.getString("password");
                 String s = String.format("%10s %10s",name, password);
+                //String s = name + " "+password;
                 arrayList.add(s);
             }
             return arrayList;

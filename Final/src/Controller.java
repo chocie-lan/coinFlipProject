@@ -110,14 +110,8 @@ public class Controller {
         public void actionPerformed(ActionEvent e){
             if(!view.getUsernameText().isEmpty() && !view.getPasswordText().isEmpty()){
                 System.out.println("LOGIN BUTTON CLICKED");
-                //System.out.println("USERNAME: "+ view.getUsernameText()); //testing if the entry is getting got corerctly
-                //System.out.println("PASSWORD: "+view.getPasswordText()); //its fine
                 printWriter.println(view.getUsernameText());
-                printWriter.println(view.getPasswordText()); //am i reinitializing this or something??
-                //check for record in database
-                //pass to server -> model -> DB
-                //if found, go to game tab
-                //else, ask them to sign up instead
+                printWriter.println(view.getPasswordText());
             }else{
                 System.out.println("Please enter a username and password!");
             }
@@ -129,6 +123,8 @@ public class Controller {
         public void actionPerformed(ActionEvent e){
             if(!view.getUsernameText().isEmpty() && !view.getPasswordText().isEmpty()){
                 System.out.println("SIGN UP BUTTON CLICKED");
+                printWriter.println(view.getUsernameText());
+                printWriter.println(view.getPasswordText());
             }else{
                 System.out.println("Please enter a username and password!");
             }
