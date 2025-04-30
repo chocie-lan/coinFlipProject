@@ -17,6 +17,7 @@ public class Controller {
         view = new View();
         view.loginButtonListener(new LoginButtonListener());
         view.coinFlipButtonListener(new coinFlipButtonListener());
+        view.signUpButtonListener(new signUpButtonListener());
     }
 
 
@@ -104,13 +105,24 @@ public class Controller {
     }
 
     private class LoginButtonListener implements ActionListener{
-        LoginButtonListener() {
-            System.out.println("Login button listener instantiated");
-        }
         @Override
         public void actionPerformed(ActionEvent e){
             if(!view.username.getText().isEmpty() && !view.password.getText().isEmpty()){
                 System.out.println("LOGIN BUTTON CLICKED");
+                //check for record in database
+                //if found, go to game tab
+                //else, ask them to sign up instead
+            }else{
+                System.out.println("Please enter a username and password!");
+            }
+        }
+    }
+
+    private static class signUpButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            if(!view.username.getText().isEmpty() && !view.password.getText().isEmpty()){
+                System.out.println("SIGN UP BUTTON CLICKED");
             }else{
                 System.out.println("Please enter a username and password!");
             }
