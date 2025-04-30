@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class View {
     private JFrame jFrame;
@@ -7,14 +8,14 @@ public class View {
     private JPanel loginPanel;
     private JPanel gamePanel;
 
-    private JTextField username;
-    private JTextField password;
+    JTextField username;
+    JTextField password;
     private JLabel login;
-    private JButton loginButton;
+    public JButton loginButton;
 
     private JButton coin;
     private JLabel coinState;
-    private JTextField betAmount;
+    JTextField betAmount;
     private JLabel bet;
     private JLabel balance;
 
@@ -28,6 +29,7 @@ public class View {
         password = new JTextField(10);
         login = new JLabel("Enter username and password");
         loginButton = new JButton("Login!");
+
 
         coin = new JButton("Flip Coin!");
         coinState = new JLabel("Coin Hasn't Been Flipped");
@@ -59,9 +61,17 @@ public class View {
     public String getUsernameText(){
         return username.getText();
     }
-
     public String getPasswordText(){
         return password.getText();
     }
+
+    //why are these not doing anything?????
+    public void loginButtonListener(ActionListener actionListener){
+        System.out.println("Login action listener added");
+        loginButton.addActionListener(actionListener);
+        System.out.println("Added listener to button: " + loginButton.getText());
+
+    }
+    public void coinFlipButtonListener(ActionListener actionListener){coin.addActionListener(actionListener);}
 
 }

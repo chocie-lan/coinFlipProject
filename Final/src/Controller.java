@@ -1,3 +1,5 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,18 +10,25 @@ import java.util.Objects;
 
 public class Controller {
     private int balance = 100;
-    private View view;
+    private static View view;
+    static PrintWriter printWriter;
+    public Controller(){
+        System.out.println("hello from controller");
+        view = new View();
+        view.loginButtonListener(new LoginButtonListener());
+        view.coinFlipButtonListener(new coinFlipButtonListener());
+    }
+
 
     public void start() {
         try (Socket socket = new Socket("localhost", 5000)) {
             System.out.println("Connected to: " + socket.getPort());
 
-            view = new View();
             view.initializeGUI();
 
             InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
 
             InputStreamReader inputStreamReader1 = new InputStreamReader(System.in);
             BufferedReader bufferedReader1 = new BufferedReader(inputStreamReader1);
@@ -94,4 +103,29 @@ public class Controller {
         }
     }
 
+    private class LoginButtonListener implements ActionListener{
+        LoginButtonListener() {
+            System.out.println("Login button listener instantiated");
+        }
+        @Override
+        public void actionPerformed(ActionEvent e){
+            if(!view.username.getText().isEmpty() && !view.password.getText().isEmpty()){
+                System.out.println("LOGIN BUTTON CLICKED");
+            }else{
+                System.out.println("Please enter a username and password!");
+            }
+        }
+    }
+
+    private static class coinFlipButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            if(!view.betAmount.getText().isEmpty()){
+                System.out.println("COIN FLIP BUTTON CLICKED");
+            }else{
+                System.out.println("Please enter a bet amount");
+            }
+
+        }
+    }
 }
