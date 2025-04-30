@@ -7,15 +7,15 @@ public class View {
     private JPanel loginPanel;
     private JPanel gamePanel;
 
-    JTextField username;
-    JTextField password;
+    private JTextField username;
+    private JTextField password;
     private JLabel login;
-    public JButton loginButton;
+    private JButton loginButton;
     public JButton createAccountButton;
 
     private JButton coin;
     private JLabel coinState;
-    JTextField betAmount;
+    private JTextField betAmount;
     private JLabel bet;
     private JLabel balance;
 
@@ -30,7 +30,6 @@ public class View {
         login = new JLabel("Enter username and password");
         loginButton = new JButton("Login!");
         createAccountButton = new JButton("Sign up");
-
 
         coin = new JButton("Flip Coin!");
         coinState = new JLabel("Coin Hasn't Been Flipped");
@@ -63,12 +62,17 @@ public class View {
     public String getUsernameText(){
         return username.getText();
     }
+
     public String getPasswordText(){
         return password.getText();
     }
 
-    //why are these not doing anything?????
+    public String getBetAmountText(){
+        return betAmount.getText();
+    }
+
     public void loginButtonListener(ActionListener actionListener){loginButton.addActionListener(actionListener);}
     public void coinFlipButtonListener(ActionListener actionListener){coin.addActionListener(actionListener);}
     public void signUpButtonListener(ActionListener actionListener){createAccountButton.addActionListener(actionListener);}
+
 }

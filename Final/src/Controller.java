@@ -12,6 +12,7 @@ public class Controller {
     private static int balance = 100;
     private static View view;
     static PrintWriter printWriter;
+
     public Controller(){
         System.out.println("hello from controller");
         view = new View();
@@ -20,16 +21,16 @@ public class Controller {
         view.signUpButtonListener(new signUpButtonListener());
     }
 
-
     public void start() {
         try (Socket socket = new Socket("localhost", 5000)) {
             System.out.println("Connected to: " + socket.getPort());
 
+            //view = new View();
             view.initializeGUI();
 
             InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            printWriter = new PrintWriter(socket.getOutputStream(), true);
+            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
 
             InputStreamReader inputStreamReader1 = new InputStreamReader(System.in);
             BufferedReader bufferedReader1 = new BufferedReader(inputStreamReader1);
@@ -46,7 +47,6 @@ public class Controller {
                 //String password = bufferedReader1.readLine();
                 //String username = view.getUsernameText();
                 //String password = view.getPasswordText();
-
                 //printWriter.println(username);
                 //printWriter.println(password);
 
@@ -104,15 +104,15 @@ public class Controller {
         }
     }
 
-    private class LoginButtonListener implements ActionListener{
+    private class LoginButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e){
-            if(!view.username.getText().isEmpty() && !view.password.getText().isEmpty()){
+            if(!view.getUsernameText().isEmpty() && !view.getPasswordText().isEmpty()){
                 System.out.println("LOGIN BUTTON CLICKED");
-                printWriter.println(view.username.getText());
-                printWriter.println(view.password.getText());
+                printWriter.println("checkUser: "+ view.getUsernameText());
+                printWriter.println("checkPassword: "+ view.getPasswordText());
                 //check for record in database
-                    //pass to server -> model -> DB
+                //pass to server -> model -> DB
                 //if found, go to game tab
                 //else, ask them to sign up instead
             }else{
@@ -124,7 +124,7 @@ public class Controller {
     private static class signUpButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            if(!view.username.getText().isEmpty() && !view.password.getText().isEmpty()){
+            if(!view.getUsernameText().isEmpty() && !view.getPasswordText().isEmpty()){
                 System.out.println("SIGN UP BUTTON CLICKED");
             }else{
                 System.out.println("Please enter a username and password!");
@@ -135,10 +135,10 @@ public class Controller {
     private static class coinFlipButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            if(!view.betAmount.getText().isEmpty()) {
+            if(!view.getBetAmountText().isEmpty()) {
                 int intValue = 0;
                 try {
-                    intValue = Integer.parseInt(view.betAmount.getText());
+                    intValue = Integer.parseInt(view.getBetAmountText());
                 } catch (NumberFormatException ex) {
                     //throw new RuntimeException(ex);
                     System.out.println("Please enter a number");
@@ -162,4 +162,5 @@ public class Controller {
 
         }
     }
+
 }

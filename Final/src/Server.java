@@ -15,9 +15,9 @@ public class Server {
 
         //test user
         modelUser.createTable();
-        String username = "user1"; //will be passed from controller (which gets it from view)
-        String password = "password123";
-        modelUser.addUser(username, password);
+        //String username = "user1"; //will be passed from controller (which gets it from view)
+        //String password = "password123";
+        //modelUser.addUser(username, password);
 
         /*
         //test leaderboard
@@ -36,15 +36,22 @@ public class Server {
             Socket clientSocket = serverSocket.accept();
             System.out.println("Client connected "+ clientSocket.getPort());
 
-
             InputStreamReader inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
             //loop for login
+            String username = null;
+            String password = null;
             while(true) {
                 String checkUser = bufferedReader.readLine();
                 String checkPass = bufferedReader.readLine();
+                ArrayList<String>users;
+                users = modelUser.readUserTable();
+                for(String s : users){
+
+
+                }
 
                 if(!username.equals(checkUser) && !password.equals(checkPass)) {
                     printWriter.println("failed");
