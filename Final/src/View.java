@@ -1,5 +1,5 @@
 import javax.swing.*;
-import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class View {
     private JFrame jFrame;
@@ -11,6 +11,7 @@ public class View {
     private JTextField password;
     private JLabel login;
     private JButton loginButton;
+    public JButton createAccountButton;
 
     private JButton coin;
     private JLabel coinState;
@@ -28,6 +29,7 @@ public class View {
         password = new JTextField(10);
         login = new JLabel("Enter username and password");
         loginButton = new JButton("Login!");
+        createAccountButton = new JButton("Sign up");
 
         coin = new JButton("Flip Coin!");
         coinState = new JLabel("Coin Hasn't Been Flipped");
@@ -41,6 +43,7 @@ public class View {
         loginPanel.add(password);
         loginPanel.add(loginButton);
         loginPanel.add(login);
+        loginPanel.add(createAccountButton);
 
         gamePanel.add(coin);
         gamePanel.add(coinState);
@@ -63,5 +66,13 @@ public class View {
     public String getPasswordText(){
         return password.getText();
     }
+
+    public String getBetAmountText(){
+        return betAmount.getText();
+    }
+
+    public void loginButtonListener(ActionListener actionListener){loginButton.addActionListener(actionListener);}
+    public void coinFlipButtonListener(ActionListener actionListener){coin.addActionListener(actionListener);}
+    public void signUpButtonListener(ActionListener actionListener){createAccountButton.addActionListener(actionListener);}
 
 }

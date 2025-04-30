@@ -1,3 +1,5 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,14 +9,23 @@ import java.net.UnknownHostException;
 import java.util.Objects;
 
 public class Controller {
-    private int balance = 100;
-    private View view;
+    private static int balance = 100;
+    private static View view;
+    static PrintWriter printWriter;
+
+    public Controller(){
+        System.out.println("hello from controller");
+        view = new View();
+        view.loginButtonListener(new LoginButtonListener());
+        view.coinFlipButtonListener(new coinFlipButtonListener());
+        view.signUpButtonListener(new signUpButtonListener());
+    }
 
     public void start() {
         try (Socket socket = new Socket("localhost", 5000)) {
             System.out.println("Connected to: " + socket.getPort());
 
-            view = new View();
+            //view = new View();
             view.initializeGUI();
 
             InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
@@ -30,15 +41,14 @@ public class Controller {
 
             //Loop for login
             while(true) {
-                System.out.println("Username:");
-                String username = bufferedReader1.readLine();
-                System.out.println("Password");
-                String password = bufferedReader1.readLine();
+                //System.out.println("Username:");
+                //String username = bufferedReader1.readLine();
+                //System.out.println("Password");
+                //String password = bufferedReader1.readLine();
                 //String username = view.getUsernameText();
                 //String password = view.getPasswordText();
-
-                printWriter.println(username);
-                printWriter.println(password);
+                //printWriter.println(username);
+                //printWriter.println(password);
 
                 String verify = bufferedReader.readLine();
                 if (verify.equals("failed")) {
@@ -91,6 +101,65 @@ public class Controller {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private class LoginButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e){
+            if(!view.getUsernameText().isEmpty() && !view.getPasswordText().isEmpty()){
+                System.out.println("LOGIN BUTTON CLICKED");
+                printWriter.println("checkUser: "+ view.getUsernameText());
+                printWriter.println("checkPassword: "+ view.getPasswordText());
+                //check for record in database
+                //pass to server -> model -> DB
+                //if found, go to game tab
+                //else, ask them to sign up instead
+            }else{
+                System.out.println("Please enter a username and password!");
+            }
+        }
+    }
+
+    private static class signUpButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            if(!view.getUsernameText().isEmpty() && !view.getPasswordText().isEmpty()){
+                System.out.println("SIGN UP BUTTON CLICKED");
+            }else{
+                System.out.println("Please enter a username and password!");
+            }
+        }
+    }
+
+    private static class coinFlipButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            if(!view.getBetAmountText().isEmpty()) {
+                int intValue = 0;
+                try {
+                    intValue = Integer.parseInt(view.getBetAmountText());
+                } catch (NumberFormatException ex) {
+                    //throw new RuntimeException(ex);
+                    System.out.println("Please enter a number");
+                    // do not allow them to flip the coin
+                }
+                if (intValue > balance) { //check if is dollar amount
+                    System.out.println("You don't have enough money for that!");
+                }
+                else if(intValue < 0){
+                    System.out.println("Enter a positive value");
+                }
+                //check if it is a positive integer
+                else {
+                    System.out.println("COIN FLIP BUTTON CLICKED");
+                }
+            }
+
+            else{
+                System.out.println("Please enter a bet amount");
+            }
+
         }
     }
 
