@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class View {
     private JFrame jFrame;
@@ -13,6 +14,8 @@ public class View {
     private JButton loginButton;
     public JButton createAccountButton;
 
+    private JList leaderboardList;
+    private DefaultListModel<String> leaderboard;
     private JButton coin;
     private JLabel coinState;
     private JTextField betAmount;
@@ -31,6 +34,9 @@ public class View {
         loginButton = new JButton("Login!");
         createAccountButton = new JButton("Sign up");
 
+
+        leaderboard = new DefaultListModel<>();
+        leaderboardList = new JList(leaderboard);
         coin = new JButton("Flip Coin!");
         coinState = new JLabel("Coin Hasn't Been Flipped");
         bet = new JLabel("Enter bet amount:");
@@ -50,6 +56,7 @@ public class View {
         gamePanel.add(bet);
         gamePanel.add(betAmount);
         gamePanel.add(balance);
+        gamePanel.add(leaderboardList);
 
         jTabs.add("Login", loginPanel);
         jTabs.add("Game", gamePanel);
@@ -57,6 +64,12 @@ public class View {
         jFrame.add(jTabs);
         jFrame.setSize(500,500);
         jFrame.setVisible(true);
+    }
+
+    public void updateLeaderboardList(ArrayList<String> top3){
+        leaderboard.removeAllElements();
+        leaderboard.addAll(top3);
+
     }
 
     public String getUsernameText(){

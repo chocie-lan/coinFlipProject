@@ -1,4 +1,5 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -15,8 +16,8 @@ public class Server {
 
         //test user
         modelUser.createTable();
-        //String username = "user1"; //will be passed from controller (which gets it from view)
-        //String password = "password123";
+        String username = "user1"; //will be passed from controller (which gets it from view)
+        String password = "password123";
         //modelUser.addUser(username, password);
 
         /*
@@ -40,23 +41,29 @@ public class Server {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
+            ArrayList<String> top3;
+            top3 = leaderboard.getTopThree();
+            /*
+            for(String s : top3){
+                System.out.println(s);
+            }
+            */
+
             //loop for login
-            String username = null;
-            String password = null;
+            //String username = null;
+            //String password = null;
             while(true) {
                 String checkUser = bufferedReader.readLine();
                 String checkPass = bufferedReader.readLine();
-                ArrayList<String>users;
-                users = modelUser.readUserTable();
-                for(String s : users){
-
-
-                }
+                System.out.println(checkUser);
+                System.out.println(checkPass);
 
                 if(!username.equals(checkUser) && !password.equals(checkPass)) {
+                    System.out.println("failed");
                     printWriter.println("failed");
 
                 }else {
+                    System.out.println("success");
                     printWriter.println("success");
                     break;
                 }
@@ -87,14 +94,15 @@ public class Server {
             String input;
             while (true) {
                 input = bufferedReader.readLine();
-
                 if(input != null && !input.equals("flipCoin")){
                     int bal = Integer.parseInt(input);
                     System.out.println(bal);
                     leaderboard.updateLeaderboard(id,bal);
-                }
-
-                if (input != null) {
+                    top3 = leaderboard.getTopThree();
+                    for(String s : top3){
+                        printWriter.println(s);
+                    }
+                } else if (input != null) {
                     String out;
                     double flip = Math.random();
                     if (flip >= 0.5) {

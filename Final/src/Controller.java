@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Controller {
@@ -30,7 +31,7 @@ public class Controller {
 
             InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
 
             InputStreamReader inputStreamReader1 = new InputStreamReader(System.in);
             BufferedReader bufferedReader1 = new BufferedReader(inputStreamReader1);
@@ -89,6 +90,14 @@ public class Controller {
                 System.out.println("Balance = "+ balance);
                 printWriter.println(balance);
 
+                ArrayList<String> top3 = new ArrayList<>();
+                for(int j = 0; j < 3; j++) {
+                    String add = bufferedReader.readLine();
+                    //System.out.println(add);
+                    top3.add(add);
+                }
+                view.updateLeaderboardList(top3);
+
                 try {
                     Thread.sleep(1000); // Pause for 1 second
                 } catch (InterruptedException e) {
@@ -109,8 +118,8 @@ public class Controller {
         public void actionPerformed(ActionEvent e){
             if(!view.getUsernameText().isEmpty() && !view.getPasswordText().isEmpty()){
                 System.out.println("LOGIN BUTTON CLICKED");
-                printWriter.println("checkUser: "+ view.getUsernameText());
-                printWriter.println("checkPassword: "+ view.getPasswordText());
+                printWriter.println(view.getUsernameText());
+                printWriter.println(view.getPasswordText());
                 //check for record in database
                 //pass to server -> model -> DB
                 //if found, go to game tab
