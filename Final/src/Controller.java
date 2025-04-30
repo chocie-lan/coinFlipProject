@@ -109,7 +109,10 @@ public class Controller {
         public void actionPerformed(ActionEvent e){
             if(!view.username.getText().isEmpty() && !view.password.getText().isEmpty()){
                 System.out.println("LOGIN BUTTON CLICKED");
+                printWriter.println("checkUser: "+ view.username.getText());
+                printWriter.println("checkPassword: "+ view.password.getText());
                 //check for record in database
+                    //pass to server -> model -> DB
                 //if found, go to game tab
                 //else, ask them to sign up instead
             }else{
