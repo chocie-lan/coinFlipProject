@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import java.util.Objects;
 
 public class Controller {
-    private int balance = 100;
+    private static int balance = 100;
     private static View view;
     static PrintWriter printWriter;
     public Controller(){
@@ -132,9 +132,28 @@ public class Controller {
     private static class coinFlipButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            if(!view.betAmount.getText().isEmpty()){
-                System.out.println("COIN FLIP BUTTON CLICKED");
-            }else{
+            if(!view.betAmount.getText().isEmpty()) {
+                int intValue = 0;
+                try {
+                    intValue = Integer.parseInt(view.betAmount.getText());
+                } catch (NumberFormatException ex) {
+                    //throw new RuntimeException(ex);
+                    System.out.println("Please enter a number");
+                    // do not allow them to flip the coin
+                }
+                if (intValue > balance) { //check if is dollar amount
+                    System.out.println("You don't have enough money for that!");
+                }
+                else if(intValue < 0){
+                    System.out.println("Enter a positive value");
+                }
+                //check if it is a positive integer
+                else {
+                    System.out.println("COIN FLIP BUTTON CLICKED");
+                }
+            }
+
+            else{
                 System.out.println("Please enter a bet amount");
             }
 
