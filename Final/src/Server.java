@@ -84,6 +84,7 @@ public class Server {
                 if(input != null && !input.equals("flipCoin")){
                     int bal = Integer.parseInt(input);
                     System.out.println(bal);
+
                     leaderboard.updateLeaderboard(id,bal);
                 }
 

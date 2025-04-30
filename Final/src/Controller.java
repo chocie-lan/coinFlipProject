@@ -40,15 +40,15 @@ public class Controller {
 
             //Loop for login
             while(true) {
-                System.out.println("Username:");
-                String username = bufferedReader1.readLine();
-                System.out.println("Password");
-                String password = bufferedReader1.readLine();
+                //System.out.println("Username:");
+                //String username = bufferedReader1.readLine();
+                //System.out.println("Password");
+                //String password = bufferedReader1.readLine();
                 //String username = view.getUsernameText();
                 //String password = view.getPasswordText();
 
-                printWriter.println(username);
-                printWriter.println(password);
+                //printWriter.println(username);
+                //printWriter.println(password);
 
                 String verify = bufferedReader.readLine();
                 if (verify.equals("failed")) {
@@ -109,8 +109,8 @@ public class Controller {
         public void actionPerformed(ActionEvent e){
             if(!view.username.getText().isEmpty() && !view.password.getText().isEmpty()){
                 System.out.println("LOGIN BUTTON CLICKED");
-                printWriter.println("checkUser: "+ view.username.getText());
-                printWriter.println("checkPassword: "+ view.password.getText());
+                printWriter.println(view.username.getText());
+                printWriter.println(view.password.getText());
                 //check for record in database
                     //pass to server -> model -> DB
                 //if found, go to game tab
