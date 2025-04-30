@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -12,8 +13,10 @@ public class View {
     private JTextField password;
     private JLabel login;
     private JButton loginButton;
-    public JButton createAccountButton;
+    private JButton createAccountButton;
 
+    private DefaultListModel<String> selections;
+    private JList selector;
     private JList leaderboardList;
     private DefaultListModel<String> leaderboard;
     private JButton coin;
@@ -26,7 +29,7 @@ public class View {
         jFrame = new JFrame();
         jTabs = new JTabbedPane();
         loginPanel = new JPanel();
-        gamePanel  = new JPanel();
+        gamePanel  = new JPanel(new GridLayout(7,1));
 
         username = new JTextField(10);
         password = new JTextField(10);
@@ -34,7 +37,8 @@ public class View {
         loginButton = new JButton("Login!");
         createAccountButton = new JButton("Sign up");
 
-
+        selections = new DefaultListModel<>();
+        selector = new JList(selections);
         leaderboard = new DefaultListModel<>();
         leaderboardList = new JList(leaderboard);
         coin = new JButton("Flip Coin!");
@@ -51,6 +55,10 @@ public class View {
         loginPanel.add(login);
         loginPanel.add(createAccountButton);
 
+        selector.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        selections.addElement("heads");
+        selections.addElement("tails");
+        gamePanel.add(selector);
         gamePanel.add(coin);
         gamePanel.add(coinState);
         gamePanel.add(bet);
@@ -70,6 +78,18 @@ public class View {
         leaderboard.removeAllElements();
         leaderboard.addAll(top3);
 
+    }
+
+    public void setBalance(int value){
+        balance.setText(Integer.toString(value));
+    }
+
+    public void setCoinState(String input){
+        coinState.setText(input);
+    }
+
+    public String getSelected(){
+        return selections.getElementAt(selector.getSelectedIndex());
     }
 
     public String getUsernameText(){
