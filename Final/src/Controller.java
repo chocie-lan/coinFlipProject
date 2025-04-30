@@ -30,7 +30,7 @@ public class Controller {
 
             InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
 
             InputStreamReader inputStreamReader1 = new InputStreamReader(System.in);
             BufferedReader bufferedReader1 = new BufferedReader(inputStreamReader1);
@@ -100,7 +100,8 @@ public class Controller {
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e); //connection is getting reset???? //DB connection or client/server?
+            System.out.println("ERROR ENCOUNTERED");
         }
     }
 
@@ -109,8 +110,10 @@ public class Controller {
         public void actionPerformed(ActionEvent e){
             if(!view.getUsernameText().isEmpty() && !view.getPasswordText().isEmpty()){
                 System.out.println("LOGIN BUTTON CLICKED");
-                printWriter.println("checkUser: "+ view.getUsernameText());
-                printWriter.println("checkPassword: "+ view.getPasswordText());
+                //System.out.println("USERNAME: "+ view.getUsernameText()); //testing if the entry is getting got corerctly
+                //System.out.println("PASSWORD: "+view.getPasswordText()); //its fine
+                printWriter.println(view.getUsernameText());
+                printWriter.println(view.getPasswordText()); //am i reinitializing this or something??
                 //check for record in database
                 //pass to server -> model -> DB
                 //if found, go to game tab

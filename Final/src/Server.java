@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Server {
     private static int userId = 1;
@@ -15,8 +16,8 @@ public class Server {
 
         //test user
         modelUser.createTable();
-        //String username = "user1"; //will be passed from controller (which gets it from view)
-        //String password = "password123";
+        String username = "user3"; //will be passed from controller (which gets it from view)
+        //String password = ""; //CHANGE, OBVIOUSLY
         //modelUser.addUser(username, password);
 
         /*
@@ -41,72 +42,73 @@ public class Server {
             PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
             //loop for login
-            String username = null;
-            String password = null;
             while(true) {
-                String checkUser = bufferedReader.readLine();
+                String checkUser = bufferedReader.readLine(); //check that printing
                 String checkPass = bufferedReader.readLine();
+                System.out.println(checkPass);
+                System.out.println(checkUser);
                 ArrayList<String>users;
                 users = modelUser.readUserTable();
+                String verifyUser = String.format("%10s %10s",checkUser, checkPass);
                 for(String s : users){
-
-
+                    System.out.println(s);
+                    if(s.equals(verifyUser)){
+                        System.out.println("Welcome back!");
+                        break;
+                        //go to game window
+                    }else {
+                        continue;
+                    }
                 }
+                System.out.println("Cannot find your account, please sign up");
 
-                if(!username.equals(checkUser) && !password.equals(checkPass)) {
-                    printWriter.println("failed");
-
-                }else {
-                    printWriter.println("success");
-                    break;
-                }
             }
 
-            int id = 0;
-            int score;
-            //grab user for leaderboard
-            ArrayList<String> leaderboardPeople;
-            leaderboardPeople = leaderboard.readLeaderboard();
-            for(String s : leaderboardPeople){
-                String[] person = s.trim().split("\\s+");
-                String name = null;
-                try {
-                    id = Integer.parseInt(person[0]);
-                    name = person[1];
-                    score = Integer.parseInt(person[2]);
-                } catch (NumberFormatException e) {
-                    System.out.println(e);
-                }
-                if(name.equals(username)){
-                    break;
-                }
-
-            }
+//            int id = 0;
+//            int score;
+//            //grab user for leaderboard
+//            ArrayList<String> leaderboardPeople;
+//            leaderboardPeople = leaderboard.readLeaderboard();
+//            for(String s : leaderboardPeople){
+//                String[] person = s.trim().split("\\s+");
+//                String name = null;
+//                try {
+//                    id = Integer.parseInt(person[0]);
+//                    name = person[1];
+//                    score = Integer.parseInt(person[2]);
+//                } catch (NumberFormatException e) {
+//                    System.out.println(e);
+//                }
+//                if(name.equals(username)){
+//                    break;
+//                }
+//
+//            }
 
             //loop for gameplay
-            String input;
-            while (true) {
-                input = bufferedReader.readLine();
-
-                if(input != null && !input.equals("flipCoin")){
-                    int bal = Integer.parseInt(input);
-                    System.out.println(bal);
-
-                    leaderboard.updateLeaderboard(id,bal);
-                }
-
-                if (input != null) {
-                    String out;
-                    double flip = Math.random();
-                    if (flip >= 0.5) {
-                        out = "heads";
-                    } else {
-                        out = "tails";
-                    }
-                    printWriter.println(out);
-                    input = null;
-                }
-            }
+//            String input;
+//            while (true) {
+//                input = bufferedReader.readLine();
+//
+//                if(input != null && !input.equals("flipCoin")){
+//                    int bal = Integer.parseInt(input);
+//                    System.out.println(bal);
+//
+//                    //leaderboard.updateLeaderboard(id,bal);
+//                }
+//
+//                if (input != null) {
+//                    String out;
+//                    double flip = Math.random();
+//                    if (flip >= 0.5) {
+//                        out = "heads";
+//                    } else {
+//                        out = "tails";
+//                    }
+//                    printWriter.println(out);
+//                    input = null;
+//                }
+           // }
         }
     }
 }
