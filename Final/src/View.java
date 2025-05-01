@@ -32,7 +32,7 @@ public class View {
         jFrame = new JFrame();
         jTabs = new JTabbedPane();
         loginPanel = new JPanel();
-        gamePanel  = new JPanel(new GridLayout(9,2));
+        gamePanel  = new JPanel(new GridLayout(6,2));
 
         username = new JTextField(10);
         password = new JTextField(10);
@@ -88,7 +88,7 @@ public class View {
         jTabs.add("Game", gamePanel);
 
         jFrame.add(jTabs);
-        jFrame.setSize(500,500);
+        jFrame.setSize(500,1000);
         jFrame.setVisible(true);
     }
 

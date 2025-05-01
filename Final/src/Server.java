@@ -14,6 +14,7 @@ public class Server {
 
         //test user
         modelUser.createTable();
+        leaderboard.createLeaderboardTable();
         String username = "user1"; //will be passed from controller (which gets it from view)
         String password = "password123";
         //modelUser.addUser(username, password);

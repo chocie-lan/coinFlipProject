@@ -145,9 +145,9 @@ public class Controller {
                     System.out.println("Please enter a number");
                     // do not allow them to flip the coin
                 }
-                if (intValue > balance) { //check if is dollar amount
-                    System.out.println("You don't have enough money for that!");
-                }
+//                if (intValue > balance) { //check if is dollar amount
+//                    System.out.println("You don't have enough money for that!");
+//                }
                 if(intValue < 0){
                     System.out.println("Enter a positive value");
                 }
@@ -175,9 +175,9 @@ public class Controller {
                     System.out.println("Please enter a number");
                     // do not allow them to flip the coin
                 }
-                if (intValue > balance) { //check if is dollar amount
-                    System.out.println("You don't have enough money for that!");
-                }
+//                if (intValue > balance) { //check if is dollar amount
+//                    System.out.println("You don't have enough money for that!");
+//                }
                 if(intValue < 0){
                     System.out.println("Enter a positive value");
                 }
