@@ -15,6 +15,9 @@ public class View {
     private JButton loginButton;
     private JButton createAccountButton;
 
+    private JButton dice;
+    private DefaultListModel<String> diceSelections;
+    private JList diceSelector;
     private DefaultListModel<String> selections;
     private JList selector;
     private JList leaderboardList;
@@ -29,7 +32,7 @@ public class View {
         jFrame = new JFrame();
         jTabs = new JTabbedPane();
         loginPanel = new JPanel();
-        gamePanel  = new JPanel(new GridLayout(7,1));
+        gamePanel  = new JPanel(new GridLayout(9,2));
 
         username = new JTextField(10);
         password = new JTextField(10);
@@ -37,6 +40,9 @@ public class View {
         loginButton = new JButton("Login!");
         createAccountButton = new JButton("Sign up");
 
+        dice = new JButton("Dice");
+        diceSelections = new DefaultListModel<>();
+        diceSelector = new JList(diceSelections);
         selections = new DefaultListModel<>();
         selector = new JList(selections);
         leaderboard = new DefaultListModel<>();
@@ -56,10 +62,22 @@ public class View {
         loginPanel.add(createAccountButton);
 
         selector.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        diceSelector.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
         selections.addElement("heads");
         selections.addElement("tails");
+
+        diceSelections.addElement("1");
+        diceSelections.addElement("2");
+        diceSelections.addElement("3");
+        diceSelections.addElement("4");
+        diceSelections.addElement("5");
+        diceSelections.addElement("6");
+
         gamePanel.add(selector);
         gamePanel.add(coin);
+        gamePanel.add(diceSelector);
+        gamePanel.add(dice);
         gamePanel.add(coinState);
         gamePanel.add(bet);
         gamePanel.add(betAmount);
@@ -78,6 +96,10 @@ public class View {
         leaderboard.removeAllElements();
         leaderboard.addAll(top3);
 
+    }
+
+    public String getSelectedDice(){
+        return diceSelections.getElementAt(diceSelector.getSelectedIndex());
     }
 
     public void setBalance(int value){
@@ -107,5 +129,6 @@ public class View {
     public void loginButtonListener(ActionListener actionListener){loginButton.addActionListener(actionListener);}
     public void coinFlipButtonListener(ActionListener actionListener){coin.addActionListener(actionListener);}
     public void signUpButtonListener(ActionListener actionListener){createAccountButton.addActionListener(actionListener);}
+    public void diceButtonListener(ActionListener actionListener){dice.addActionListener(actionListener);}
 
 }

@@ -1,11 +1,9 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
-    private static int userId = 1;
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(5000);
@@ -20,19 +18,6 @@ public class Server {
         String password = "password123";
         //modelUser.addUser(username, password);
 
-        /*
-        //test leaderboard
-        leaderboard.createLeaderboardTable();
-        leaderboard.createLeaderboard("user1", 0);
-        //leaderboard.createLeaderboard("bob", 0);
-        leaderboard.updateLeaderboard(1, 10);
-        leaderboard.deleteLeaderboard(2);
-        ArrayList<String> arrayList;
-        arrayList = leaderboard.readLeaderboard();
-        for(String s : arrayList){
-            System.out.println(s);
-        }
-*/
         while (true){
             Socket clientSocket = serverSocket.accept();
             System.out.println("Client connected "+ clientSocket.getPort());
@@ -43,15 +28,7 @@ public class Server {
 
             ArrayList<String> top3;
             top3 = leaderboard.getTopThree();
-            /*
-            for(String s : top3){
-                System.out.println(s);
-            }
-            */
 
-            //loop for login
-            //String username = null;
-            //String password = null;
             while(true) {
                 String checkUser = bufferedReader.readLine();
                 String checkPass = bufferedReader.readLine();
@@ -94,21 +71,40 @@ public class Server {
             String input;
             while (true) {
                 input = bufferedReader.readLine();
-                if(input != null && !input.equals("flipCoin")){
+                if(input != null && !input.equals("flipCoin") && !input.equals("rollDice")){
                     int bal = Integer.parseInt(input);
-                    System.out.println(bal);
+                    //System.out.println(bal);
                     leaderboard.updateLeaderboard(id,bal);
                     top3 = leaderboard.getTopThree();
                     for(String s : top3){
                         printWriter.println(s);
                     }
-                } else if (input != null) {
+                } else if (input != null && input.equals("flipCoin")) {
                     String out;
                     double flip = Math.random();
                     if (flip >= 0.5) {
                         out = "heads";
                     } else {
                         out = "tails";
+                    }
+                    printWriter.println(out);
+                    input = null;
+                } else if (input != null && input.equals("rollDice")){
+                    String out;
+                    int roll = (int)(Math.random() * 6) + 1;
+                    //System.out.println(roll);
+                    if(roll == 1){
+                        out = "1";
+                    } else if (roll == 2) {
+                        out = "2";
+                    } else if (roll == 3) {
+                        out = "3";
+                    } else if (roll == 4) {
+                        out = "4";
+                    } else if (roll == 5) {
+                        out = "5";
+                    } else {
+                        out = "6";
                     }
                     printWriter.println(out);
                     input = null;

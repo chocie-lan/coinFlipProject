@@ -25,6 +25,7 @@ public class Controller {
         view.loginButtonListener(new LoginButtonListener());
         view.coinFlipButtonListener(new coinFlipButtonListener());
         view.signUpButtonListener(new signUpButtonListener());
+        view.diceButtonListener(new diceButtonListener());
     }
 
     public void start() {
@@ -56,7 +57,7 @@ public class Controller {
                     String choice = view.getSelected();
                     int bet = Integer.parseInt(view.getBetAmountText());
                     if(choice.equals(gameInput)){
-                        balance += bet;
+                        balance += bet*2;
                     } else {
                         balance -=bet;
                     }
@@ -72,6 +73,29 @@ public class Controller {
                     }
                     view.updateLeaderboardList(top3);
                 }
+                if (!gameInput.equals(null) && (gameInput.equals("1") || gameInput.equals("2")
+                        || gameInput.equals("3") || gameInput.equals("4") || gameInput.equals("5")
+                        || gameInput.equals("6")  )) {
+                    int bet = Integer.parseInt(view.getBetAmountText());
+                    String choice = view.getSelectedDice();
+                    if(choice.equals(gameInput)){
+                        balance += bet*6;
+                    } else {
+                        balance -=bet;
+                    }
+                    view.setCoinState(gameInput);
+                    view.setBalance(balance);
+                    printWriter.println(balance);
+
+                    ArrayList<String> top3 = new ArrayList<>();
+                    for (int j = 0; j < 3; j++) {
+                        String add = bufferedReader.readLine();
+                        //System.out.println(add);
+                        top3.add(add);
+                    }
+                    view.updateLeaderboardList(top3);
+
+                }
             }
 
         } catch (UnknownHostException e) {
@@ -85,7 +109,7 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e){
             if(!view.getUsernameText().isEmpty() && !view.getPasswordText().isEmpty()){
-                System.out.println("LOGIN BUTTON CLICKED");
+                //System.out.println("LOGIN BUTTON CLICKED");
                 printWriter.println(view.getUsernameText());
                 printWriter.println(view.getPasswordText());
                 //check for record in database
@@ -121,11 +145,9 @@ public class Controller {
                     System.out.println("Please enter a number");
                     // do not allow them to flip the coin
                 }
-                /*
                 if (intValue > balance) { //check if is dollar amount
                     System.out.println("You don't have enough money for that!");
                 }
-                */
                 if(intValue < 0){
                     System.out.println("Enter a positive value");
                 }
@@ -141,5 +163,35 @@ public class Controller {
 
         }
     }
+    private static class diceButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(!view.getBetAmountText().isEmpty()) {
+                int intValue = 0;
+                try {
+                    intValue = Integer.parseInt(view.getBetAmountText());
+                } catch (NumberFormatException ex) {
+                    //throw new RuntimeException(ex);
+                    System.out.println("Please enter a number");
+                    // do not allow them to flip the coin
+                }
+                if (intValue > balance) { //check if is dollar amount
+                    System.out.println("You don't have enough money for that!");
+                }
+                if(intValue < 0){
+                    System.out.println("Enter a positive value");
+                }
+                //check if it is a positive integer
+                else {
+                   // System.out.println("DICE BUTTON CLICKED");
+                    printWriter.println("rollDice");
+                }
+            }
+            else{
+                System.out.println("Please enter a bet amount");
+            }
+        }
+    }
+
 
 }
