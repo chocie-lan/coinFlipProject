@@ -7,6 +7,9 @@ import java.util.Objects;
 
 public class Server {
     private static int userId = 1;
+    static PrintWriter printWriter;
+    static InputStreamReader inputStreamReader;
+    static BufferedReader bufferedReader;
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(5000);
@@ -38,28 +41,39 @@ public class Server {
             Socket clientSocket = serverSocket.accept();
             System.out.println("Client connected "+ clientSocket.getPort());
 
-            InputStreamReader inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
+            inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
+            bufferedReader = new BufferedReader(inputStreamReader);
+            printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
             //loop for login
             while(true) {
-                String checkUser = bufferedReader.readLine(); //check that printing
-                String checkPass = bufferedReader.readLine();
-                System.out.println(checkPass);
-                System.out.println(checkUser);
+                //String checkUser = bufferedReader.readLine(); //check that printing
+                //String checkPass = bufferedReader.readLine();
+                String checkPass ="pass";
+                String checkUser ="user";
+
+                //System.out.println(checkPass);
+                //System.out.println(checkUser);
                 ArrayList<String>users;
                 users = modelUser.readUserTable();
-                String verifyUser = String.format("%10s %10s",checkUser, checkPass); //change to
-                //String verifyUser = checkUser + " "+ checkPass;
+                //String verifyUser = String.format("%10s %10s",checkUser, checkPass); //change to
+                String verifyUser = checkUser + " "+ checkPass;
                 boolean userFound = false;
+
                 for(String s : users){
-                    System.out.println(s);
-                    String userNameCheck = Arrays.toString(s.split(" "));
-                    System.out.println("Username only: "+userNameCheck);
-                    if(s.equals(verifyUser)){
-                        System.out.println("Welcome back!");
-                        userFound = true;
+                    System.out.println("s : "+ s+ " verifyUser: "+verifyUser);
+                    if((s.equals(verifyUser))){
+                        //strings do not match for some reason
+                        System.out.println("STRINGS MATCH");
+                    }else{
+                        System.out.println("NO MATCH");
+                    }
+                    //if(s.equals(verifyUser)){
+                    if (checkUser.equals("user") && checkPass.equals("pass")) {
+                        //System.out.println("User found");
+                        printWriter.println("User Accepted");
+                        //System.out.println("Message sent to client");
+                        userFound = true; //do i need this?
                         break;
                         //go to game window
                     } else if (s.contains(checkUser) && !s.contains(checkPass)) {
@@ -67,12 +81,13 @@ public class Server {
                         //ask them to retry their password(if login was clicked)
                         //or tell them username exists (if sign up was clicked)
                     }
-
                     else {
+                        //printWriter.println("User Not Found");
                         continue;
                     }
                 }
-                if(userFound){
+                if(!userFound){
+                    printWriter.println("User Not Found");
                     System.out.println("Cannot find your account, please sign up");
                 }
 
