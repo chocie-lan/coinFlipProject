@@ -47,97 +47,104 @@ public class Server {
 
             //loop for login
             while(true) {
-                //String checkUser = bufferedReader.readLine(); //check that printing
-                //String checkPass = bufferedReader.readLine();
-                String checkPass ="pass";
-                String checkUser ="user";
+                String whichButton = bufferedReader.readLine();
+                String checkUser = bufferedReader.readLine();
+                String checkPass = bufferedReader.readLine();
 
-                //System.out.println(checkPass);
-                //System.out.println(checkUser);
+                System.out.println("PASSWORD FROM VIEW CLIENT: " + checkPass);
+                System.out.println("USERNAME FROM VIEW CLIENT: "+ checkUser);
                 ArrayList<String>users;
                 users = modelUser.readUserTable();
-                //String verifyUser = String.format("%10s %10s",checkUser, checkPass); //change to
-                String verifyUser = checkUser + " "+ checkPass;
                 boolean userFound = false;
 
                 for(String s : users){
-                    System.out.println("s : "+ s+ " verifyUser: "+verifyUser);
-                    if((s.equals(verifyUser))){
-                        //strings do not match for some reason
-                        System.out.println("STRINGS MATCH");
+                    String myUsername = "";
+                    String myPassword = "";
+                    String[] existingUsers = s.trim().split("\\s+");
+                    try{
+                        myUsername = existingUsers[0];
+                        myPassword = existingUsers[1];
+                    }catch(NumberFormatException e){
+                        System.out.println("error");
+                    }
+                    if(myUsername.equals(checkUser) && myPassword.equals(checkPass)){
+                        if(whichButton.equals("login")){
+                            userFound = true;
+                            printWriter.println("success");
+                            break;
+                        } else if (whichButton.equals("signup")) {
+                            System.out.println("A user with that name already exists");
+                        }
+
+//                    }else if(myUsername.equals(checkUser) && !myPassword.equals(checkPass)){
+//                        userFound = true;
+//                        System.out.println("PARTIAL MATCH DETECTED");
+//                        printWriter.println("partial match");
+                        //this breaks it for some reason...
                     }else{
                         System.out.println("NO MATCH");
                     }
-                    //if(s.equals(verifyUser)){
-                    if (checkUser.equals("user") && checkPass.equals("pass")) {
-                        //System.out.println("User found");
-                        printWriter.println("User Accepted");
-                        //System.out.println("Message sent to client");
-                        userFound = true; //do i need this?
-                        break;
-                        //go to game window
-                    } else if (s.contains(checkUser) && !s.contains(checkPass)) {
-                        System.out.println("found matching username");
-                        //ask them to retry their password(if login was clicked)
-                        //or tell them username exists (if sign up was clicked)
-                    }
-                    else {
-                        //printWriter.println("User Not Found");
-                        continue;
-                    }
                 }
                 if(!userFound){
-                    printWriter.println("User Not Found");
-                    System.out.println("Cannot find your account, please sign up");
+                    if(whichButton.equals("login")){
+                        printWriter.println("failed");
+                    } else if(whichButton.equals("signup")){
+                        printWriter.println("success");
+                        modelUser.addUser(checkUser, checkPass);
+                        //add user to database
+                    }
+
+                }else{
+                    break;
                 }
 
             }
 
-//            int id = 0;
-//            int score;
-//            //grab user for leaderboard
-//            ArrayList<String> leaderboardPeople;
-//            leaderboardPeople = leaderboard.readLeaderboard();
-//            for(String s : leaderboardPeople){
-//                String[] person = s.trim().split("\\s+");
-//                String name = null;
-//                try {
-//                    id = Integer.parseInt(person[0]);
-//                    name = person[1];
-//                    score = Integer.parseInt(person[2]);
-//                } catch (NumberFormatException e) {
-//                    System.out.println(e);
-//                }
-//                if(name.equals(username)){
-//                    break;
-//                }
-//
-//            }
+            int id = 0;
+            int score;
+            //grab user for leaderboard
+            ArrayList<String> leaderboardPeople;
+            leaderboardPeople = leaderboard.readLeaderboard();
+            for(String s : leaderboardPeople){
+                String[] person = s.trim().split("\\s+");
+                String name = null;
+                try {
+                    id = Integer.parseInt(person[0]);
+                    name = person[1];
+                    score = Integer.parseInt(person[2]);
+                } catch (NumberFormatException e) {
+                    System.out.println(e);
+                }
+                if(name.equals(username)){
+                    break;
+                }
+
+            }
 
             //loop for gameplay
-//            String input;
-//            while (true) {
-//                input = bufferedReader.readLine();
-//
-//                if(input != null && !input.equals("flipCoin")){
-//                    int bal = Integer.parseInt(input);
-//                    System.out.println(bal);
-//
-//                    //leaderboard.updateLeaderboard(id,bal);
-//                }
-//
-//                if (input != null) {
-//                    String out;
-//                    double flip = Math.random();
-//                    if (flip >= 0.5) {
-//                        out = "heads";
-//                    } else {
-//                        out = "tails";
-//                    }
-//                    printWriter.println(out);
-//                    input = null;
-//                }
-           // }
+            String input;
+            while (true) {
+                input = bufferedReader.readLine();
+
+                if(input != null && !input.equals("flipCoin")){
+                    int bal = Integer.parseInt(input);
+                    System.out.println(bal);
+
+                    //leaderboard.updateLeaderboard(id,bal);
+                }
+
+                if (input != null) {
+                    String out;
+                    double flip = Math.random();
+                    if (flip >= 0.5) {
+                        out = "heads";
+                    } else {
+                        out = "tails";
+                    }
+                    printWriter.println(out);
+                    input = null;
+                }
+            }
         }
     }
 }

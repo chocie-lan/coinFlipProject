@@ -9,6 +9,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+//look at single responsibility more -> change in github
+
 public class Controller {
     private static int balance = 100;
     private static View view;
@@ -39,17 +41,19 @@ public class Controller {
             printWriter = new PrintWriter(socket.getOutputStream(), true);
 
             //Loop for login
-//            while (true) {
-//                String verify = bufferedReader.readLine();
-//                if (verify.equals("failed")) {
-//                    System.out.println("Incorrect username and password!");
-//
-//                } else if (verify.equals("success")) {
-//                    System.out.println("User accepted");
-//                    view.cardLayout.show(view.cardPanel, "Game");
-//                    break;
-//                }
-//            }
+            while (true) {
+                String verify = bufferedReader.readLine();
+                if (verify.equals("failed")) {
+                    view.viewLogin.statusMessage.setText("Invalid login information, please sign up!");
+//                }else if(verify.equals("partial Match")){
+//                    System.out.println("Please verify password for "+ view.viewLogin.getUsernameText() + "or click sign up to make a new account");
+                }else if (verify.equals("success")) {
+                    //System.out.println("User accepted");
+                    view.viewLogin.statusMessage.setText("User Accepted!");
+                    view.cardLayout.show(view.cardPanel, "Game");
+                    break;
+                }
+            }
 
             //loop for gameplay
             String gameInput;
@@ -110,20 +114,9 @@ public class Controller {
         public void actionPerformed(ActionEvent e){
             if(!view.viewLogin.getUsernameText().isEmpty() && !view.viewLogin.getPasswordText().isEmpty()){
                 System.out.println("LOGIN BUTTON CLICKED");
+                printWriter.println("login");
                 printWriter.println(view.viewLogin.getUsernameText());
                 printWriter.println(view.viewLogin.getPasswordText());
-
-                try {
-                    System.out.println("Searching for status...");
-                    String status = bufferedReader.readLine();
-                    System.out.println("BUFF READER: "+ status);
-                    if(status.equals("User Accepted")){ //appears to pause here -> blocking call
-                        System.out.println("USER ACCEPTED");
-                        view.cardLayout.show(view.cardPanel, "Game");
-                    }
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
             }else{
                 System.out.println("Please enter a username and password!");
             }
@@ -135,6 +128,7 @@ public class Controller {
         public void actionPerformed(ActionEvent e){
             if(!view.viewLogin.getUsernameText().isEmpty() && !view.viewLogin.getPasswordText().isEmpty()){
                 System.out.println("SIGN UP BUTTON CLICKED");
+                printWriter.println("signup");
                 printWriter.println(view.viewLogin.getUsernameText());
                 printWriter.println(view.viewLogin.getPasswordText());
             }else{
