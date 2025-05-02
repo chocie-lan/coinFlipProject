@@ -32,19 +32,9 @@ public class Controller {
         try (Socket socket = new Socket("localhost", 5000)) {
             System.out.println("Connected to: " + socket.getPort());
 
-            //view = new View();
-            //view.initializeGUI();
-
             inputStreamReader = new InputStreamReader(socket.getInputStream());
             bufferedReader = new BufferedReader(inputStreamReader);
             printWriter = new PrintWriter(socket.getOutputStream(), true);
-
-            //InputStreamReader inputStreamReader1 = new InputStreamReader(System.in);
-            //BufferedReader bufferedReader1 = new BufferedReader(inputStreamReader1);
-
-            //String bet;
-            //String amount;
-            //int amountInt = 0;
 
             //Loop for login
             while (true) {
@@ -59,7 +49,7 @@ public class Controller {
 
             //loop for gameplay
             String gameInput;
-            while (true) {
+            while(true){
                 gameInput = bufferedReader.readLine();
                 if (!gameInput.equals(null) && (gameInput.equals("heads") || gameInput.equals("tails"))) {
                     String choice = view.getSelected();
@@ -72,6 +62,7 @@ public class Controller {
                     view.setCoinState(gameInput);
                     view.setBalance(balance);
                     printWriter.println(balance);
+
                     ArrayList<String> top3 = new ArrayList<>();
                     for (int j = 0; j < 3; j++) {
                         String add = bufferedReader.readLine();
@@ -160,7 +151,6 @@ public class Controller {
                     printWriter.println("flipCoin");
                 }
             }
-
             else{
                 System.out.println("Please enter a bet amount");
             }

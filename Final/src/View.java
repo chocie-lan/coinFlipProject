@@ -23,7 +23,6 @@ public class View {
     private JList leaderboardList;
     private DefaultListModel<String> leaderboard;
 
-
     private JButton coin;
     private JLabel coinState;
     private JTextField betAmount;
@@ -90,7 +89,7 @@ public class View {
         jTabs.add("Game", gamePanel);
 
         jFrame.add(jTabs);
-        jFrame.setSize(500,500);
+        jFrame.setSize(500,1000);
         jFrame.setVisible(true);
     }
 
