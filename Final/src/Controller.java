@@ -6,19 +6,26 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Controller {
     private static int balance = 100;
     private static View view;
     static PrintWriter printWriter;
+    static InputStreamReader inputStreamReader;
+    static BufferedReader bufferedReader;
 
     public Controller(){
         System.out.println("hello from controller");
         view = new View();
+        view.setBalance(balance);
+        view.initializeGUI();
+
         view.loginButtonListener(new LoginButtonListener());
         view.coinFlipButtonListener(new coinFlipButtonListener());
         view.signUpButtonListener(new signUpButtonListener());
+        view.diceButtonListener(new diceButtonListener());
     }
 
     public void start() {
@@ -26,82 +33,80 @@ public class Controller {
             System.out.println("Connected to: " + socket.getPort());
 
             //view = new View();
-            view.initializeGUI();
+            //view.initializeGUI();
 
-            InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            inputStreamReader = new InputStreamReader(socket.getInputStream());
+            bufferedReader = new BufferedReader(inputStreamReader);
             printWriter = new PrintWriter(socket.getOutputStream(), true);
 
-            InputStreamReader inputStreamReader1 = new InputStreamReader(System.in);
-            BufferedReader bufferedReader1 = new BufferedReader(inputStreamReader1);
+            //InputStreamReader inputStreamReader1 = new InputStreamReader(System.in);
+            //BufferedReader bufferedReader1 = new BufferedReader(inputStreamReader1);
 
-            String bet;
-            String amount;
-            int amountInt = 0;
+            //String bet;
+            //String amount;
+            //int amountInt = 0;
 
             //Loop for login
-            while(true) {
-                //System.out.println("Username:");
-                //String username = bufferedReader1.readLine();
-                //System.out.println("Password");
-                //String password = bufferedReader1.readLine();
-                //String username = view.getUsernameText();
-                //String password = view.getPasswordText();
-                //printWriter.println(username);
-                //printWriter.println(password);
-
+            while (true) {
                 String verify = bufferedReader.readLine();
                 if (verify.equals("failed")) {
                     System.out.println("Incorrect username and password!");
 
-                } else if (verify.equals("success")){
+                } else if (verify.equals("success")) {
                     break;
                 }
             }
 
             //loop for gameplay
-            for(int i =0; i < 5; i++){
-                System.out.println("Heads or Tails?");
-                bet = bufferedReader1.readLine();
-                System.out.println("Amount: ");
-                amount = bufferedReader1.readLine();
-                try {
-                    amountInt = Integer.parseInt(amount);
-                } catch (NumberFormatException e) {
-                    System.out.println(e);
+            String gameInput;
+            while (true) {
+                gameInput = bufferedReader.readLine();
+                if (!gameInput.equals(null) && (gameInput.equals("heads") || gameInput.equals("tails"))) {
+                    String choice = view.getSelected();
+                    int bet = Integer.parseInt(view.getBetAmountText());
+                    if (choice.equals(gameInput)) {
+                        balance += bet * 2;
+                    } else {
+                        balance -= bet;
+                    }
+                    view.setCoinState(gameInput);
+                    view.setBalance(balance);
+                    printWriter.println(balance);
+                    ArrayList<String> top3 = new ArrayList<>();
+                    for (int j = 0; j < 3; j++) {
+                        String add = bufferedReader.readLine();
+                        System.out.println(add);
+                        top3.add(add);
+                    }
+                    view.updateLeaderboardList(top3);
                 }
+                if (!gameInput.equals(null) && (gameInput.equals("1") || gameInput.equals("2")
+                        || gameInput.equals("3") || gameInput.equals("4") || gameInput.equals("5")
+                        || gameInput.equals("6"))) {
+                    int bet = Integer.parseInt(view.getBetAmountText());
+                    String choice = view.getSelectedDice();
+                    if (choice.equals(gameInput)) {
+                        balance += bet * 6;
+                    } else {
+                        balance -= bet;
+                    }
+                    view.setCoinState(gameInput);
+                    view.setBalance(balance);
+                    printWriter.println(balance);
 
-                printWriter.println("flipCoin");
-                System.out.println("Coin flip requested");
-
-                String input = bufferedReader.readLine();
-                System.out.println(input);
-
-                if(input.equals(bet)){
-                    amountInt = amountInt*2;
-                    balance = balance+amountInt;
-                    amountInt = 0;
-                } else {
-                    balance = balance-amountInt;
-                    amountInt = 0;
-                }
-
-                System.out.println("Balance = "+ balance);
-                printWriter.println(balance);
-
-                try {
-                    Thread.sleep(1000); // Pause for 1 second
-                } catch (InterruptedException e) {
-                    // Handle the exception if the sleep is interrupted
-                    e.printStackTrace();
+                    ArrayList<String> top3 = new ArrayList<>();
+                    for (int j = 0; j < 3; j++) {
+                        String add = bufferedReader.readLine();
+                        //System.out.println(add);
+                        top3.add(add);
+                    }
+                    view.updateLeaderboardList(top3);
                 }
             }
-
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
-            //throw new RuntimeException(e); //connection is getting reset???? //DB connection or client/server?
-            System.out.println("ERROR ENCOUNTERED");
+            throw new RuntimeException(e);
         }
     }
 
@@ -109,7 +114,7 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e){
             if(!view.getUsernameText().isEmpty() && !view.getPasswordText().isEmpty()){
-                System.out.println("LOGIN BUTTON CLICKED");
+                //System.out.println("LOGIN BUTTON CLICKED");
                 printWriter.println(view.getUsernameText());
                 printWriter.println(view.getPasswordText());
             }else{
@@ -143,22 +148,52 @@ public class Controller {
                     System.out.println("Please enter a number");
                     // do not allow them to flip the coin
                 }
-                if (intValue > balance) { //check if is dollar amount
-                    System.out.println("You don't have enough money for that!");
-                }
-                else if(intValue < 0){
+//                if (intValue > balance) { //check if is dollar amount
+//                    System.out.println("You don't have enough money for that!");
+//                }
+                if(intValue < 0){
                     System.out.println("Enter a positive value");
                 }
                 //check if it is a positive integer
                 else {
                     System.out.println("COIN FLIP BUTTON CLICKED");
+                    printWriter.println("flipCoin");
                 }
             }
 
             else{
                 System.out.println("Please enter a bet amount");
             }
+        }
+    }
 
+    private static class diceButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(!view.getBetAmountText().isEmpty()) {
+                int intValue = 0;
+                try {
+                    intValue = Integer.parseInt(view.getBetAmountText());
+                } catch (NumberFormatException ex) {
+                    //throw new RuntimeException(ex);
+                    System.out.println("Please enter a number");
+                    // do not allow them to flip the coin
+                }
+//                if (intValue > balance) { //check if is dollar amount
+//                    System.out.println("You don't have enough money for that!");
+//                }
+                if(intValue < 0){
+                    System.out.println("Enter a positive value");
+                }
+                //check if it is a positive integer
+                else {
+                    // System.out.println("DICE BUTTON CLICKED");
+                    printWriter.println("rollDice");
+                }
+            }
+            else{
+                System.out.println("Please enter a bet amount");
+            }
         }
     }
 
