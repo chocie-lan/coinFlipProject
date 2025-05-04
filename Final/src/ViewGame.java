@@ -17,6 +17,7 @@ public class ViewGame extends JPanel {
     private JLabel bet;
     private JLabel balance;
     public ViewGame(){
+        setLayout(null);
         dice = new JButton("Dice");
         diceSelections = new DefaultListModel<>();
         diceSelector = new JList(diceSelections);
@@ -43,6 +44,18 @@ public class ViewGame extends JPanel {
         diceSelections.addElement("4");
         diceSelections.addElement("5");
         diceSelections.addElement("6");
+
+        selector.setBounds(10,50, 50,50);
+        coin.setBounds(100, 50, 100, 30);
+        coinState.setBounds(250, 50, 150, 20);
+        diceSelector.setBounds(10, 150, 20,120);
+        dice.setBounds(100,150, 70, 70);
+
+        //dice state????
+        bet.setBounds(25, 300, 150,20);
+        betAmount.setBounds(150, 300, 100,20);
+        balance.setBounds(200,300, 50, 20);
+        leaderboardList.setBounds(300,300, 100,100);
 
         add(selector);
         add(coin);

@@ -60,46 +60,14 @@ public class Controller {
             while(true){
                 gameInput = bufferedReader.readLine();
                 if (!gameInput.equals(null) && (gameInput.equals("heads") || gameInput.equals("tails"))) {
-                    String choice = view.viewGame.getSelected();
-                    int bet = Integer.parseInt(view.viewGame.getBetAmountText());
-                    if (choice.equals(gameInput)) {
-                        balance += bet * 2;
-                    } else {
-                        balance -= bet;
-                    }
-                    view.viewGame.setCoinState(gameInput);
-                    view.viewGame.setBalance(balance);
-                    printWriter.println(balance);
-
-                    ArrayList<String> top3 = new ArrayList<>();
-                    for (int j = 0; j < 3; j++) {
-                        String add = bufferedReader.readLine();
-                        System.out.println(add);
-                        top3.add(add);
-                    }
-                    view.viewGame.updateLeaderboardList(top3);
+                    changeBalanceCoin(gameInput);
+                    getLeaderboard();
                 }
                 if (!gameInput.equals(null) && (gameInput.equals("1") || gameInput.equals("2")
                         || gameInput.equals("3") || gameInput.equals("4") || gameInput.equals("5")
                         || gameInput.equals("6"))) {
-                    int bet = Integer.parseInt(view.viewGame.getBetAmountText());
-                    String choice = view.viewGame.getSelectedDice();
-                    if (choice.equals(gameInput)) {
-                        balance += bet * 6;
-                    } else {
-                        balance -= bet;
-                    }
-                    view.viewGame.setCoinState(gameInput);
-                    view.viewGame.setBalance(balance);
-                    printWriter.println(balance);
-
-                    ArrayList<String> top3 = new ArrayList<>();
-                    for (int j = 0; j < 3; j++) {
-                        String add = bufferedReader.readLine();
-                        //System.out.println(add);
-                        top3.add(add);
-                    }
-                    view.viewGame.updateLeaderboardList(top3);
+                    changeBalanceDice(gameInput);
+                    getLeaderboard();
                 }
             }
         } catch (UnknownHostException e) {
@@ -107,6 +75,46 @@ public class Controller {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void changeBalanceCoin(String gameInput) {
+        int bet = Integer.parseInt(view.viewGame.getBetAmountText());
+        String choice = view.viewGame.getSelected();
+        if(choice.equals(gameInput)){
+            balance += bet*2;
+        } else {
+            balance -=bet;
+        }
+        view.viewGame.setCoinState(gameInput);
+        view.viewGame.setBalance(balance);
+        printWriter.println(balance);
+
+    }
+
+    public void changeBalanceDice(String gameInput){
+        int bet = Integer.parseInt(view.viewGame.getBetAmountText());
+        String choice = view.viewGame.getSelectedDice();
+        if(choice.equals(gameInput)){
+            balance += bet*6;
+        } else {
+            balance -=bet;
+        }
+        view.viewGame.setCoinState(gameInput);
+        view.viewGame.setBalance(balance);
+        printWriter.println(balance);
+    }
+    public void getLeaderboard(){
+        ArrayList<String> top3 = new ArrayList<>();
+        for (int j = 0; j < 3; j++) {
+            try {
+                String add = bufferedReader.readLine();
+                //System.out.println(add);
+                top3.add(add);
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+        }
+        view.viewGame.updateLeaderboardList(top3);
     }
 
     private class LoginButtonListener implements ActionListener {
