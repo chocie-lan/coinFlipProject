@@ -54,7 +54,7 @@ public class ViewGame extends JPanel {
         //dice state????
         bet.setBounds(25, 300, 150,20);
         betAmount.setBounds(150, 300, 100,20);
-        balance.setBounds(200,300, 50, 20);
+        balance.setBounds(250,10, 50, 20);
         leaderboardList.setBounds(300,300, 100,100);
 
         add(selector);
