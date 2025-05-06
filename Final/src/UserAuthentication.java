@@ -37,7 +37,7 @@ public class UserAuthentication {
             if (myUsername.equals(checkUser) && myPassword.equals(checkPass)) {
                     return true;
             } else {
-                System.out.println("NO MATCH");
+                //System.out.println("NO MATCH");
             }
         }
         return false;

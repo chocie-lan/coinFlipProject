@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -42,15 +43,14 @@ public class Controller {
 
             //Loop for login
             while (true) {
+                System.out.println("HELLO FROM LOGIN LOOP");
                 String verify = bufferedReader.readLine();
                 if (verify.equals("failed")) {
                     view.viewLogin.statusMessage.setText("Invalid login information, please sign up!");
-//                }else if(verify.equals("partial Match")){
-//                    System.out.println("Please verify password for "+ view.viewLogin.getUsernameText() + "or click sign up to make a new account");
                 }else if (verify.equals("success")) {
-                    //System.out.println("User accepted");
                     view.viewLogin.statusMessage.setText("User Accepted!");
                     view.cardLayout.show(view.cardPanel, "Game");
+                    System.out.println("END LOGIN LOOP");
                     break;
                 }
             }
@@ -59,7 +59,10 @@ public class Controller {
             String gameInput;
             while(true){
                 gameInput = bufferedReader.readLine();
+                System.out.println("GAME INPUT: " + gameInput);
+                System.out.println("HELLO FROM CONTROLLER GAME PLAY LOOP"); //ONLY WORKS ON 4th, 7th, 10th... iterations
                 if (!gameInput.equals(null) && (gameInput.equals("heads") || gameInput.equals("tails"))) {
+                    System.out.println("CALLING CHANGE COIN BALANCE");
                     changeBalanceCoin(gameInput);
                     getLeaderboard();
                 }
@@ -78,6 +81,7 @@ public class Controller {
     }
 
     public void changeBalanceCoin(String gameInput) {
+        System.out.println("CHANGE COIN BALANCE CALLED");
         int bet = Integer.parseInt(view.viewGame.getBetAmountText());
         String choice = view.viewGame.getSelected();
         if(choice.equals(gameInput)){
@@ -87,7 +91,8 @@ public class Controller {
         }
         view.viewGame.setCoinState(gameInput);
         view.viewGame.setBalance(balance);
-        printWriter.println(balance);
+        System.out.println("SENDING BALANCE TO SERVER: "+ balance);
+        printWriter.println(balance); //is this just for the database??
 
     }
 
@@ -164,6 +169,7 @@ public class Controller {
                 }
                 else {
                     System.out.println("COIN FLIP BUTTON CLICKED");
+                    System.out.println("SINGING COMMAND TO SERVER: flipCoin");
                     printWriter.println("flipCoin");
                 }
             }
@@ -195,6 +201,7 @@ public class Controller {
                 //check if it is a positive integer
                 else {
                     // System.out.println("DICE BUTTON CLICKED");
+                    System.out.println("SINGING COMMAND TO SERVER: rollDice");
                     printWriter.println("rollDice");
                 }
             }
