@@ -10,15 +10,13 @@ public class Server {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(5000);
         System.out.println("server started on port: "+ serverSocket.getLocalPort());
-        int num = 0;
         while (true) {
             Socket clientSocket = serverSocket.accept();
             System.out.println("Client connected " + clientSocket.getPort());
 
-            ThreadMultiClient threadMultiClient = new ThreadMultiClient(num, clientSocket);
+            ThreadMultiClient threadMultiClient = new ThreadMultiClient(clientSocket);
             Thread thread = new Thread(threadMultiClient);
             thread.start();
-            num++;
         }
     }
 }
