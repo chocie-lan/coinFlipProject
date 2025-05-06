@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class Controller {
     private static int balance = 100;
     private static View view;
+
     static PrintWriter printWriter;
     static InputStreamReader inputStreamReader;
     static BufferedReader bufferedReader;
@@ -35,15 +36,15 @@ public class Controller {
             bufferedReader = new BufferedReader(inputStreamReader);
             printWriter = new PrintWriter(socket.getOutputStream(), true);
 
-            //handleSignup(); //what the fuck......
             handleLogin();
             handleGameplay();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            view.viewLogin.statusMessage.setText("ERROR: Make sure server is running before launching main");
+            System.out.println(e);
         }
     }
 
-    public void handleLogin() throws IOException { //what about hanleSignup??
+    public void handleLogin() throws IOException {
         while (true) {
             String verify = bufferedReader.readLine();
             if (verify.equals("failed")) {
@@ -56,21 +57,6 @@ public class Controller {
         }
     }
 
-    public void handleSignup() throws IOException { //what about handleSignup??
-        while (true) {
-            System.out.println("HELLO FROM SIGNUP FUNCTION");
-            String verify = bufferedReader.readLine();
-            if (verify.equals("failed")) {
-                System.out.println("FAILED TO SIGN YOU UP");
-                view.viewLogin.statusMessage.setText("User exists, please choose a new username or double-check your password!");
-            }else if (verify.equals("success")) {
-                System.out.println("ACCOUNT CREATED");
-                view.viewLogin.statusMessage.setText("User Accepted!");
-                view.cardLayout.show(view.cardPanel, "Game");
-                break;
-            }
-        }
-    }
 
     public boolean isCoinFlip(String gameInput){
         if(gameInput != null && (gameInput.equals("heads") || gameInput.equals("tails"))){
@@ -226,4 +212,5 @@ public class Controller {
             }
         }
     }
+
 }

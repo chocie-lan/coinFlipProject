@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import static java.lang.Thread.sleep;
 
 public class ThreadMultiClient implements Runnable {
     ModelLeaderboard leaderboard = new ModelLeaderboard();
@@ -15,7 +14,6 @@ public class ThreadMultiClient implements Runnable {
     PrintWriter printWriter = null;
     BufferedReader bufferedReader;
     InputStreamReader inputStreamReader;
-    //private int threadNumber;
     private Socket clientSocket;
     String username = null;
 
@@ -49,6 +47,9 @@ public class ThreadMultiClient implements Runnable {
                     username = checkUser;
                     break;
                 }
+                else{
+                    printWriter.println("failed");
+                }
             } else if (whichButton.equals("login")) {
                 String loginReturn = userAuthentication.login(checkUser, checkPass, users);
                 if (loginReturn.equals("validUser")) {
@@ -74,7 +75,7 @@ public class ThreadMultiClient implements Runnable {
     }
 
     public void handleGameplay() throws IOException {
-        initializeLeaderboard();
+
         int id = 0;
         ArrayList<String> top3;
         ArrayList<String> leaderboardPeople;

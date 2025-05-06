@@ -7,6 +7,7 @@ public class View extends JFrame{
     ViewGame viewGame;
     ViewLogin viewLogin;
 
+
     public View(){
         setTitle("Coin Flip Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,5 +26,7 @@ public class View extends JFrame{
         cardLayout.show(cardPanel, "Login");
 
         setVisible(true);
+
     }
+
 }

@@ -2,21 +2,21 @@ import java.util.ArrayList;
 
 public class UserAuthentication {
     public String login(String checkUser, String checkPass, ArrayList<String> userList){
-        boolean userFound = searchForUser(checkUser,checkPass, userList);
-        if(userFound){
+        int userFound = searchForUser(checkUser,checkPass, userList);
+        if(userFound == 1){
             return "validUser";
         }
-        return "accountDNE"; //prompt sign up
+        return "accountDNE";
     }
     public String signup(String checkUser, String checkPass, ArrayList<String> userList){
-        boolean userFound = searchForUser(checkUser, checkPass, userList);
-        if(!userFound){
-            return "addNewUser"; //prompt login
+        int userFound = searchForUser(checkUser, checkPass, userList);
+        if(userFound == 0){
+            return "addNewUser";
         }
+        System.out.println("SELECT A NEW USERNAME");
         return "userExists";
     }
-    public boolean searchForUser(String checkUser, String checkPass, ArrayList<String> userList) {
-        //loop for login
+    public int searchForUser(String checkUser, String checkPass, ArrayList<String> userList) {
         for (String s : userList) {
             String myUsername = "";
             String myPassword = "";
@@ -28,9 +28,11 @@ public class UserAuthentication {
                 System.out.println("error");
             }
             if (myUsername.equals(checkUser) && myPassword.equals(checkPass)) {
-                    return true;
+                return 1;
+            }else if(myUsername.equals(checkUser)){
+                return 2;
             }
         }
-        return false;
+        return 0;
     }
 }

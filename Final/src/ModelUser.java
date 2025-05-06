@@ -51,4 +51,8 @@ public class ModelUser {
             throw new RuntimeException(e);
         }
     }
+    public void closeConnection() throws SQLException {
+        DBConnection.closeConnection();
+    }
+
 }
