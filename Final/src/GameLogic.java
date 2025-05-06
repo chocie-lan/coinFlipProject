@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class GameLogic {
     public String runGame(String input) {
             if (input != null && !input.equals("flipCoin") && !input.equals("rollDice")) {
@@ -26,6 +24,7 @@ public class GameLogic {
     public String rollDice(){
         String out = "";
         int roll = (int) (Math.random() * 6) + 1;
+        //UPDATE: Use String.valueOf(roll); //???
         if (roll == 1) {
             out = "1";
         } else if (roll == 2) {

@@ -11,7 +11,7 @@ public class ModelLeaderboard {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    } //need leaderboard to be live
+    }
 
     public void createLeaderboardTable(){
         String cmd = "CREATE TABLE IF NOT EXISTS leaderboard(" +
@@ -76,10 +76,9 @@ public class ModelLeaderboard {
             ResultSet rs = statement.executeQuery(cmd);
             ArrayList<String> arrayList = new ArrayList<>();
             while (rs.next()){
-                int id = rs.getInt("id");
                 String name = rs.getString("name");
                 int score = rs.getInt("score");
-                String s = String.format("%3d %10s %3d", id, name, score);
+                String s = String.format("%10s %3d", name, score);
                 arrayList.add(s);
             }
             return arrayList;

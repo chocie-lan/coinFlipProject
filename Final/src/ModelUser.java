@@ -3,7 +3,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ModelUser {
     private Connection connection;
@@ -17,7 +16,6 @@ public class ModelUser {
         }
     }
     public void createTable(){
-        //ADD A TABLE
         String create = "CREATE TABLE IF NOT EXISTS userData(userID INTEGER PRIMARY KEY,"+
                 "username TEXT NOT NULL,"+
                 "password TEXT NOT NULL);";
@@ -27,7 +25,7 @@ public class ModelUser {
             throw new RuntimeException(e);
         }
     }
-    //ADD USER
+
     public void addUser(String newName, String newPassword){
         String newUser = String.format("INSERT INTO userData(username, password) VALUES('%s','%s');", newName, newPassword);
         try(Statement statement= connection.createStatement()){

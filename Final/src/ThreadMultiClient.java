@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 import static java.lang.Thread.sleep;
 
-
-//new thread for leader board in gameplay loop, also thread in controller, one constantly listens, one constantly updates
 public class ThreadMultiClient implements Runnable {
     ModelLeaderboard leaderboard = new ModelLeaderboard();
     ModelUser modelUser = new ModelUser();
@@ -35,6 +33,7 @@ public class ThreadMultiClient implements Runnable {
             throw new RuntimeException(e);
         }
     }
+    
 
     @Override
     public void run() {
@@ -42,6 +41,7 @@ public class ThreadMultiClient implements Runnable {
         try {
             while (clientSocket.isConnected()) {
                 //loop for login
+                //UPDATE: break this out into handleLogin() function
                 while (true) {
                     String whichButton = bufferedReader.readLine();
                     String checkUser = bufferedReader.readLine();
@@ -91,39 +91,12 @@ public class ThreadMultiClient implements Runnable {
                     }
                 }
 
-                    //loop for gameplay
-//                    String input;
-//                    String value;
-//                    while (true) {
-//                        input = bufferedReader.readLine();
-//                        String out = gamelogic.runGame(input);
-//                        printWriter.println(out);
-//                        int id = 0;
-//                        int score;
-//                        ArrayList<String> leaderboardPeople;
-//                        leaderboardPeople = leaderboard.readLeaderboard();
-//                        for (String s : leaderboardPeople){
-//                            String[] person = s.trim().split("\\s+");
-//                            String name = null;
-//                            try {
-//                                id = Integer.parseInt(person[0]);
-//                                name = person[1];
-//                                score = Integer.parseInt(person[2]);
-//                                printWriter.println(name+": "+score);
-//                            } catch (NumberFormatException e) {
-//                                System.out.println(e);
-//                            }
-//                            if (name.equals(username)) {
-//                                break;
-//                            }
-//
-//                        }
-//                    }
                 //loop for gameplay
                 String input;
                 String value;
                 while (true) {
                     input = bufferedReader.readLine();
+                    //UPDATE: break this if condition out into function. isInputGameType() -> true/false
                     if (input != null && !input.equals("flipCoin") && !input.equals("rollDice")) {
                         int bal = Integer.parseInt(input);
                         leaderboard.updateLeaderboard(id,bal);

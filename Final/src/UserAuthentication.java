@@ -4,7 +4,6 @@ public class UserAuthentication {
     public String login(String checkUser, String checkPass, ArrayList<String> userList){
         boolean userFound = searchForUser(checkUser,checkPass, userList);
         if(userFound){
-            System.out.println("Valid login, signing you in");
             return "validUser";
         }
         return "accountDNE"; //prompt sign up
@@ -12,7 +11,6 @@ public class UserAuthentication {
     public String signup(String checkUser, String checkPass, ArrayList<String> userList){
         boolean userFound = searchForUser(checkUser, checkPass, userList);
         if(!userFound){
-            System.out.println("User not found, creating account");
             return "addNewUser"; //prompt login
         }
         return "userExists";

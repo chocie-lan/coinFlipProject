@@ -5,10 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-
-import static java.lang.Thread.sleep;
 
 public class Controller {
     private static int balance = 100;
@@ -38,37 +35,72 @@ public class Controller {
             bufferedReader = new BufferedReader(inputStreamReader);
             printWriter = new PrintWriter(socket.getOutputStream(), true);
 
-            //Loop for login
-            while (true) {
-                String verify = bufferedReader.readLine();
-                if (verify.equals("failed")) {
-                    view.viewLogin.statusMessage.setText("Invalid login information, please sign up!");
-                }else if (verify.equals("success")) {
-                    view.viewLogin.statusMessage.setText("User Accepted!");
-                    view.cardLayout.show(view.cardPanel, "Game");
-                    break;
-                }
-            }
-
-            //loop for gameplay
-            String gameInput;
-            while(true){
-                gameInput = bufferedReader.readLine();
-                if (!gameInput.equals(null) && (gameInput.equals("heads") || gameInput.equals("tails"))) {
-                    changeBalanceCoin(gameInput);
-                    getLeaderboard();
-                }
-                if (!gameInput.equals(null) && (gameInput.equals("1") || gameInput.equals("2")
-                        || gameInput.equals("3") || gameInput.equals("4") || gameInput.equals("5")
-                        || gameInput.equals("6"))) {
-                    changeBalanceDice(gameInput);
-                    getLeaderboard();
-                }
-            }
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
+            //handleSignup(); //what the fuck......
+            handleLogin();
+            handleGameplay();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void handleLogin() throws IOException { //what about hanleSignup??
+        while (true) {
+            String verify = bufferedReader.readLine();
+            if (verify.equals("failed")) {
+                view.viewLogin.statusMessage.setText("Invalid login information, please sign up or double-check password");
+            }else if (verify.equals("success")) {
+                view.viewLogin.statusMessage.setText("User Accepted!");
+                view.cardLayout.show(view.cardPanel, "Game");
+                break;
+            }
+        }
+    }
+
+    public void handleSignup() throws IOException { //what about handleSignup??
+        while (true) {
+            System.out.println("HELLO FROM SIGNUP FUNCTION");
+            String verify = bufferedReader.readLine();
+            if (verify.equals("failed")) {
+                System.out.println("FAILED TO SIGN YOU UP");
+                view.viewLogin.statusMessage.setText("User exists, please choose a new username or double-check your password!");
+            }else if (verify.equals("success")) {
+                System.out.println("ACCOUNT CREATED");
+                view.viewLogin.statusMessage.setText("User Accepted!");
+                view.cardLayout.show(view.cardPanel, "Game");
+                break;
+            }
+        }
+    }
+
+    public boolean isCoinFlip(String gameInput){
+        if(gameInput != null && (gameInput.equals("heads") || gameInput.equals("tails"))){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isDiceRoll(String gameInput){
+        if(gameInput != null && (gameInput.equals("1") || gameInput.equals("2")
+                || gameInput.equals("3") || gameInput.equals("4") || gameInput.equals("5")
+                || gameInput.equals("6"))){
+            return true;
+        }
+        return false;
+    }
+
+    public void handleGameplay() throws IOException {
+        System.out.println("HELLO FROM HANDLE GAMEPLAY");
+        String gameInput;
+        while(true){
+            gameInput = bufferedReader.readLine();
+            if (isCoinFlip(gameInput)) {
+                changeBalanceCoin(gameInput);
+                getLeaderboard();
+            }
+            if (isDiceRoll(gameInput)) {
+                changeBalanceDice(gameInput);
+                getLeaderboard();
+            }
         }
     }
 
@@ -89,7 +121,7 @@ public class Controller {
         int bet = Integer.parseInt(view.viewGame.getBetAmountText());
         String choice = view.viewGame.getSelectedDice();
         if(choice.equals(gameInput)){
-            balance += bet*5; //used to be times 6, shouldn't it just increase by bet if correct and decrease if incorrect?
+            balance += bet*5;
         } else {
             balance -=bet;
         }
@@ -116,26 +148,23 @@ public class Controller {
         try {
             intValue = Integer.parseInt(view.viewGame.getBetAmountText());
         } catch (NumberFormatException ex) {
-            System.out.println("Please enter a number");
             view.viewGame.message.setText("Please enter a number for your bet");
         }
         if (intValue > balance) {
-            System.out.println("You don't have enough money for that!");
             view.viewGame.message.setText("You don't have enough money for that!");
             return false;
         } else if (intValue < 0){
-            System.out.println("Enter a positive value");
             view.viewGame.message.setText("Enter a positive value");
             return false;
         } else if (balance == 0){
-            view.viewGame.message.setText("No more money, you lose!"); //fix so that it shows up as soon as balance is 0
+            view.viewGame.message.setText("No more money, you lose!");
             return false;
         } else {
             return true;
         }
     }
 
-    private class LoginButtonListener implements ActionListener { //login & signup have a bit of repetition
+    private class LoginButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e){
             if(!view.viewLogin.getUsernameText().isEmpty() && !view.viewLogin.getPasswordText().isEmpty()){
@@ -174,8 +203,7 @@ public class Controller {
                 }
                 view.viewGame.enableButtons();
             } catch (Exception ex) {
-                System.out.println(ex);
-                view.viewGame.message.setText("Make a selection to bet on");
+                view.viewGame.message.setText("Make a coin selection to bet on");
             }
         }
     }
@@ -194,12 +222,8 @@ public class Controller {
                 }
                 view.viewGame.enableButtons();
             } catch (Exception ex) {
-                System.out.println(ex);
-                view.viewGame.message.setText("Make a selection to bet on");
-                //print to view window??
-                //also dice needs to tell you to enter a bet amount
+                view.viewGame.message.setText("Make a dice selection to bet on");
             }
         }
     }
-
 }
