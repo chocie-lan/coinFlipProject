@@ -3,22 +3,29 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class ViewGame extends JPanel {
+    //dice
     private JButton dice;
     private DefaultListModel<String> diceSelections;
     private JList diceSelector;
+    private JLabel diceState;
+
+    //coin
     private DefaultListModel<String> selections;
     private JList selector;
-    private JLabel diceState;
-    private JList leaderboardList;
-    private DefaultListModel<String> leaderboard;
-
     private JButton coin;
     private JLabel coinState;
+
+    //leaderboard
+    private JList leaderboardList;
+    private DefaultListModel<String> leaderboard;
+    private JLabel leaderboardLabel;
+
+    //betting
     private JTextField betAmount;
     private JLabel bet;
     private JLabel balance;
     private JLabel balanceLabel;
-    private JLabel leaderboardLabel;
+
 
     public ViewGame(){
         setLayout(null);

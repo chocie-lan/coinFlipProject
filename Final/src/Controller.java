@@ -16,7 +16,6 @@ public class Controller {
     static BufferedReader bufferedReader;
 
     public Controller(){
-        System.out.println("hello from controller");
         view = new View();
         view.viewGame.setBalance(balance);
         view.viewGame.initializeGameView();
@@ -38,14 +37,12 @@ public class Controller {
 
             //Loop for login
             while (true) {
-                System.out.println("HELLO FROM LOGIN LOOP");
                 String verify = bufferedReader.readLine();
                 if (verify.equals("failed")) {
                     view.viewLogin.statusMessage.setText("Invalid login information, please sign up!");
                 }else if (verify.equals("success")) {
                     view.viewLogin.statusMessage.setText("User Accepted!");
                     view.cardLayout.show(view.cardPanel, "Game");
-                    System.out.println("END LOGIN LOOP");
                     break;
                 }
             }
@@ -54,10 +51,7 @@ public class Controller {
             String gameInput;
             while(true){
                 gameInput = bufferedReader.readLine();
-                System.out.println("GAME INPUT: " + gameInput);
-                System.out.println("HELLO FROM CONTROLLER GAME PLAY LOOP");
                 if (!gameInput.equals(null) && (gameInput.equals("heads") || gameInput.equals("tails"))) {
-                    System.out.println("CALLING CHANGE COIN BALANCE");
                     changeBalanceCoin(gameInput);
                     getLeaderboard();
                 }
@@ -76,7 +70,6 @@ public class Controller {
     }
 
     public void changeBalanceCoin(String gameInput) {
-        System.out.println("CHANGE COIN BALANCE CALLED");
         int bet = Integer.parseInt(view.viewGame.getBetAmountText());
         String choice = view.viewGame.getSelected();
         if(choice.equals(gameInput)){
@@ -86,8 +79,7 @@ public class Controller {
         }
         view.viewGame.setCoinState(gameInput);
         view.viewGame.setBalance(balance);
-        System.out.println("SENDING BALANCE TO SERVER: "+ balance);
-        printWriter.println(balance); //is this just for the database??
+        printWriter.println(balance);
 
     }
 
@@ -137,11 +129,10 @@ public class Controller {
         }
     }
 
-    private class LoginButtonListener implements ActionListener {
+    private class LoginButtonListener implements ActionListener { //login & signup have a bit of repetition
         @Override
         public void actionPerformed(ActionEvent e){
             if(!view.viewLogin.getUsernameText().isEmpty() && !view.viewLogin.getPasswordText().isEmpty()){
-                System.out.println("LOGIN BUTTON CLICKED");
                 printWriter.println("login");
                 printWriter.println(view.viewLogin.getUsernameText());
                 printWriter.println(view.viewLogin.getPasswordText());
@@ -186,5 +177,4 @@ public class Controller {
             }
         }
     }
-
 }

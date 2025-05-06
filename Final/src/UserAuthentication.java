@@ -10,7 +10,6 @@ public class UserAuthentication {
         return "accountDNE"; //prompt sign up
     }
     public String signup(String checkUser, String checkPass, ArrayList<String> userList){
-        System.out.println("SIGN UP METHOD CALLED");
         boolean userFound = searchForUser(checkUser, checkPass, userList);
         if(!userFound){
             System.out.println("User not found, creating account");
@@ -20,8 +19,6 @@ public class UserAuthentication {
     }
     public boolean searchForUser(String checkUser, String checkPass, ArrayList<String> userList) {
         //loop for login
-        System.out.println("PASSWORD IN USER AUTHENTICATION: " + checkPass);
-        System.out.println("USERNAME FROM USER AUTHENTICATION: " + checkUser);
         for (String s : userList) {
             String myUsername = "";
             String myPassword = "";
@@ -34,8 +31,6 @@ public class UserAuthentication {
             }
             if (myUsername.equals(checkUser) && myPassword.equals(checkPass)) {
                     return true;
-            } else {
-                //System.out.println("NO MATCH");
             }
         }
         return false;

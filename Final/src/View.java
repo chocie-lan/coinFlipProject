@@ -1,13 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
-public class View extends JFrame{ //view is the FRAME
-    //viewGame/View Login are PANELS -> tabs for game play?
-    CardLayout cardLayout;
+public class View extends JFrame{
+    CardLayout cardLayout; //add getters??
     JPanel cardPanel;
-    ViewGame viewGame; //getter??
+    ViewGame viewGame;
     ViewLogin viewLogin;
 
     public View(){

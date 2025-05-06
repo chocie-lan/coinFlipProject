@@ -13,7 +13,6 @@ public class GameLogic {
                 input = null;
                 return out;
             } else if (input != null && input.equals("rollDice")) {
-                System.out.println("ROLL DICE GAMELOGIC");
                 int roll = (int) (Math.random() * 6) + 1;
                 if (roll == 1) {
                     out = "1";
@@ -30,7 +29,6 @@ public class GameLogic {
                 }
                 input = null;
                 return (out);
-
             }
             return null;
     }

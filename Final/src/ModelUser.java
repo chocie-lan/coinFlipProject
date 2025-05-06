@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class ModelUser {
-    private String username = "Bob";
-    private String password = "Password";
     private Connection connection;
 
     public ModelUser(){
@@ -44,13 +42,10 @@ public class ModelUser {
         String cmd = "SELECT * FROM userData;";
         try (Statement statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(cmd);
-            //reference modelLeaderboard
             ArrayList<String> arrayList = new ArrayList<>();
             while (rs.next()){
-                //int id = rs.getInt("id");
                 String name = rs.getString("username");
                 String password = rs.getString("password");
-                //String s = String.format("%10s %10s",name, password);
                 String s = name + " " +password;
                 arrayList.add(s);
             }
@@ -59,21 +54,4 @@ public class ModelUser {
             throw new RuntimeException(e);
         }
     }
-
-    public void searchUser(String name, String password){
-        boolean userFound = false;
-        String checkString = String.format("%10s %10s",name, password);
-        ArrayList<String> userArray = readUserTable();//call readTable -> return the array list
-        for(String s : userArray){
-            if(s.equals(checkString)){
-                System.out.println("Logging you in");
-                userFound = true;
-                break;
-            }
-        }
-        if(!userFound){
-            System.out.println("Unable to find your account; please create an account or try again ");
-        }
-    }
-
 }

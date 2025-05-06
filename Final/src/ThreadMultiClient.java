@@ -17,7 +17,6 @@ public class ThreadMultiClient implements Runnable {
     String username = "user1";
 
     public ThreadMultiClient(int threadNumber, Socket clientSocket) {
-        System.out.println("Hello from threadMultiClient constructor");
         this.threadNumber = threadNumber;
         this.clientSocket = clientSocket;
 
@@ -65,9 +64,7 @@ public class ThreadMultiClient implements Runnable {
                     String value;
                     while (true) {
                         input = bufferedReader.readLine();
-                        System.out.println("INPUT:"+ input);
                         String out = gamelogic.runGame(input);
-                        System.out.println("returning: " + out);
                         printWriter.println(out);
                         int id = 0;
                         int score;
