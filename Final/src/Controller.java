@@ -104,7 +104,7 @@ public class Controller {
         } else {
             balance -=bet;
         }
-        view.viewGame.setCoinState(gameInput);
+        view.viewGame.setDiceState(gameInput);
         view.viewGame.setBalance(balance);
         printWriter.println(balance);
     }
@@ -158,13 +158,14 @@ public class Controller {
                 try {
                     intValue = Integer.parseInt(view.viewGame.getBetAmountText());
                 } catch (NumberFormatException ex) {
-                    System.out.println("Please enter a number");
+                    System.out.println("Please enter a number");//add a statement in the GUI
                     // do not allow them to flip the coin
                 }
-//                if (intValue > balance) { //check if is dollar amount
-//                    System.out.println("You don't have enough money for that!");
-//                }
-                if(intValue < 0){
+                if (intValue > balance) { //check if is dollar amount
+                    System.out.println("You don't have enough money for that!");
+                    //add statement to GUI
+                }
+                else if (intValue < 0){
                     System.out.println("Enter a positive value");
                 }
                 else {

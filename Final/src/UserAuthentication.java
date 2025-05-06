@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-//if you don't press the correct button originally, it will not let you try again....
-
 public class UserAuthentication {
     public String login(String checkUser, String checkPass, ArrayList<String> userList){
         boolean userFound = searchForUser(checkUser,checkPass, userList);

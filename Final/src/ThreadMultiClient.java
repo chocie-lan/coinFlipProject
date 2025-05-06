@@ -60,57 +60,39 @@ public class ThreadMultiClient implements Runnable {
                     }
                     }
 
-                    int id = 0;
-                    int score;
-                    //grab user for leaderboard
-                    ArrayList<String> leaderboardPeople;
-                    leaderboardPeople = leaderboard.readLeaderboard();
-                    for (String s : leaderboardPeople) {
-                        String[] person = s.trim().split("\\s+");
-                        String name = null;
-                        try {
-                            id = Integer.parseInt(person[0]);
-                            name = person[1];
-                            score = Integer.parseInt(person[2]);
-                        } catch (NumberFormatException e) {
-                            System.out.println(e);
-                        }
-                        if (name.equals(username)) {
-                            break;
-                        }
-
-                    }
                     //loop for gameplay
                     String input;
                     String value;
                     while (true) {
-                        //something is wrong with the way i am sending it
-                        input = bufferedReader.readLine(); //got rid of the value, just to see, but its moe broken somehow???
+                        input = bufferedReader.readLine();
+                        System.out.println("INPUT:"+ input);
+                        String out = gamelogic.runGame(input);
+                        System.out.println("returning: " + out);
+                        printWriter.println(out);
+                        int id = 0;
+                        int score;
+                        ArrayList<String> leaderboardPeople;
+                        leaderboardPeople = leaderboard.readLeaderboard();
+                        for (String s : leaderboardPeople){
+                            String[] person = s.trim().split("\\s+");
+                            String name = null;
+                            try {
+                                id = Integer.parseInt(person[0]);
+                                name = person[1];
+                                score = Integer.parseInt(person[2]);
+                                printWriter.println(name+": "+score);
+                            } catch (NumberFormatException e) {
+                                System.out.println(e);
+                            }
+                            if (name.equals(username)) {
+                                break;
+                            }
 
-                        //System.out.println("CONTROLLER GAMEPLAY INPUT: "+ input); //it is also getting "flip coin", is getting it twice?
-                        if(input.equals("flipCoin")){
-                            System.out.println("INPUT:"+ input);
-                            String out = gamelogic.runGame(input);
-                            printWriter.println(out);
                         }
-                        //also is input supposed to be the current balance??
-
-                        //when it works:
-//                            CONTROLLER GAMEPLAY INPUT: flipCoin -> flip coin command
-//                            HELLO FROM runGame in GameLogic
-//                            CONTROLLER GAMEPLAY INPUT: 146 -> then current balance -> ik u have other questions, but works for now
-//                            HELLO FROM runGame in GameLogic //interesting that it is calling run twice...
-                        //when it fails:
-//                            CONTROLLER GAMEPLAY INPUT: flipCoin -> sends ONLY flip coin, not the balance... weird...
-//                            HELLO FROM runGame in GameLogic
-
-
                     }
                 }
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
