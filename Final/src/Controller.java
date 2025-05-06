@@ -6,11 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.Objects;
-
-//look at single responsibility more -> change in github
 
 public class Controller {
     private static int balance = 100;
@@ -23,7 +19,6 @@ public class Controller {
         System.out.println("hello from controller");
         view = new View();
         view.viewGame.setBalance(balance);
-        //view.initializeGUI();
         view.viewGame.initializeGameView();
         view.viewLogin.initializeLogin();
 
@@ -60,7 +55,7 @@ public class Controller {
             while(true){
                 gameInput = bufferedReader.readLine();
                 System.out.println("GAME INPUT: " + gameInput);
-                System.out.println("HELLO FROM CONTROLLER GAME PLAY LOOP"); //ONLY WORKS ON 4th, 7th, 10th... iterations
+                System.out.println("HELLO FROM CONTROLLER GAME PLAY LOOP");
                 if (!gameInput.equals(null) && (gameInput.equals("heads") || gameInput.equals("tails"))) {
                     System.out.println("CALLING CHANGE COIN BALANCE");
                     changeBalanceCoin(gameInput);
@@ -113,13 +108,33 @@ public class Controller {
         for (int j = 0; j < 3; j++) {
             try {
                 String add = bufferedReader.readLine();
-                //System.out.println(add);
                 top3.add(add);
             } catch (IOException e) {
                 System.out.println(e);
             }
         }
         view.viewGame.updateLeaderboardList(top3);
+    }
+
+
+    public static boolean checkUserBet(){
+        int intValue = 0;
+        try {
+            intValue = Integer.parseInt(view.viewGame.getBetAmountText());
+        } catch (NumberFormatException ex) {
+            System.out.println("Please enter a number");
+        }
+        if (intValue > balance) {
+            System.out.println("You don't have enough money for that!");
+            return false;
+        }
+        else if (intValue < 0){
+            System.out.println("Enter a positive value");
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     private class LoginButtonListener implements ActionListener {
@@ -153,29 +168,10 @@ public class Controller {
     private static class coinFlipButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            if(!view.viewGame.getBetAmountText().isEmpty()) {
-                int intValue = 0;
-                try {
-                    intValue = Integer.parseInt(view.viewGame.getBetAmountText());
-                } catch (NumberFormatException ex) {
-                    System.out.println("Please enter a number");//add a statement in the GUI
-                    // do not allow them to flip the coin
-                }
-                if (intValue > balance) { //check if is dollar amount
-                    System.out.println("You don't have enough money for that!");
-                    //add statement to GUI
-                }
-                else if (intValue < 0){
-                    System.out.println("Enter a positive value");
-                }
-                else {
-                    System.out.println("COIN FLIP BUTTON CLICKED");
-                    System.out.println("SINGING COMMAND TO SERVER: flipCoin");
-                    printWriter.println("flipCoin");
-                }
-            }
-            else{
-                System.out.println("Please enter a bet amount");
+            if(!view.viewGame.getBetAmountText().isEmpty() && checkUserBet()) {
+                printWriter.println("flipCoin");
+            }else{
+                System.out.println("Please enter bet amount");
             }
         }
     }
@@ -183,31 +179,10 @@ public class Controller {
     private static class diceButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(!view.viewGame.getBetAmountText().isEmpty()) {
-                int intValue = 0;
-                System.out.println("DICE BUTTON CLICKED");
-                try {
-                    intValue = Integer.parseInt(view.viewGame.getBetAmountText());
-                } catch (NumberFormatException ex) {
-                    //throw new RuntimeException(ex);
-                    System.out.println("Please enter a number");
-                    // do not allow them to flip the coin
-                }
-//                if (intValue > balance) { //check if is dollar amount
-//                    System.out.println("You don't have enough money for that!");
-//                }
-                if(intValue < 0){
-                    System.out.println("Enter a positive value");
-                }
-                //check if it is a positive integer
-                else {
-                    // System.out.println("DICE BUTTON CLICKED");
-                    System.out.println("SINGING COMMAND TO SERVER: rollDice");
+            if(!view.viewGame.getBetAmountText().isEmpty() && checkUserBet()) {
                     printWriter.println("rollDice");
-                }
-            }
-            else{
-                System.out.println("Please enter a bet amount");
+            }else{
+                System.out.println("Please enter bet amount");
             }
         }
     }
