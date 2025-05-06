@@ -8,6 +8,7 @@ public class ViewGame extends JPanel {
     private JList diceSelector;
     private DefaultListModel<String> selections;
     private JList selector;
+    private JLabel diceState;
     private JList leaderboardList;
     private DefaultListModel<String> leaderboard;
 
@@ -16,20 +17,34 @@ public class ViewGame extends JPanel {
     private JTextField betAmount;
     private JLabel bet;
     private JLabel balance;
+    private JLabel balanceLabel;
+    private JLabel leaderboardLabel;
+
     public ViewGame(){
         setLayout(null);
+        //dice
         dice = new JButton("Dice");
         diceSelections = new DefaultListModel<>();
         diceSelector = new JList(diceSelections);
+        diceState = new JLabel("Dice Hasn't Been Rolled");
+
+        //coin
         selections = new DefaultListModel<>();
         selector = new JList(selections);
-        leaderboard = new DefaultListModel<>();
-        leaderboardList = new JList(leaderboard);
         coin = new JButton("Flip Coin!");
         coinState = new JLabel("Coin Hasn't Been Flipped");
+
+        //leaderboard
+        leaderboard = new DefaultListModel<>();
+        leaderboardList = new JList(leaderboard);
+        leaderboardLabel = new JLabel("Leaderboard:");
+
+        //betting
         bet = new JLabel("Enter bet amount:");
         betAmount = new JTextField(10);
         balance = new JLabel("Current Balance: ");
+        balanceLabel = new JLabel("Current Balance: ");
+
     }
     public void initializeGameView(){
         selector.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -45,17 +60,20 @@ public class ViewGame extends JPanel {
         diceSelections.addElement("5");
         diceSelections.addElement("6");
 
-        selector.setBounds(10,50, 50,50);
-        coin.setBounds(100, 50, 100, 30);
-        coinState.setBounds(250, 50, 150, 20);
-        diceSelector.setBounds(10, 150, 20,120);
-        dice.setBounds(100,150, 70, 70);
+        selector.setBounds(50,80, 50,50);
+        coin.setBounds(150, 80, 100, 30);
+        coinState.setBounds(300, 80, 150, 20);
+        diceSelector.setBounds(50, 180, 20,120);
+        dice.setBounds(150,180, 70, 70);
+        diceState.setBounds(300, 180, 150,20);
 
-        //dice state????
-        bet.setBounds(25, 300, 150,20);
-        betAmount.setBounds(150, 300, 100,20);
-        balance.setBounds(200,300, 50, 20);
+
+        bet.setBounds(25, 10, 150,20);
+        betAmount.setBounds(150, 10, 100,20);
+        balance.setBounds(400,10, 50, 20);
         leaderboardList.setBounds(300,300, 100,100);
+        balanceLabel.setBounds(300,10,100,20);
+        leaderboardLabel.setBounds(300, 270, 100, 20);
 
         add(selector);
         add(coin);
@@ -66,13 +84,15 @@ public class ViewGame extends JPanel {
         add(betAmount);
         add(balance);
         add(leaderboardList);
+        add(diceState);
+        add(leaderboardLabel);
+        add(balanceLabel);
     }
 
     public void updateLeaderboardList(ArrayList<String> top3){
         leaderboard.removeAllElements();
         leaderboard.addAll(top3);
     }
-
     public String getSelectedDice(){
         return diceSelections.getElementAt(diceSelector.getSelectedIndex());
     }
@@ -82,6 +102,9 @@ public class ViewGame extends JPanel {
 
     public void setCoinState(String input){
         coinState.setText(input);
+    }
+    public void setDiceState(String input){
+        diceState.setText(input);
     }
 
     public String getSelected(){

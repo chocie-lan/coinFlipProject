@@ -7,9 +7,9 @@ import java.util.Objects;
 
 public class Server {
     private static int userId = 1;
-    static PrintWriter printWriter;
-    static InputStreamReader inputStreamReader;
-    static BufferedReader bufferedReader;
+    //static PrintWriter printWriter;
+    //static InputStreamReader inputStreamReader;
+   // static BufferedReader bufferedReader;
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(5000);

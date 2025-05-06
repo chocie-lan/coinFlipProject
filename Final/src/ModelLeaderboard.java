@@ -57,6 +57,17 @@ public class ModelLeaderboard {
         }
     }
 
+    public void deleteLeaderboard(int id){
+        String cmd = "DELETE FROM leaderboard WHERE id = ?";
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(cmd)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ArrayList<String> getTopThree(){
         String cmd = "SELECT * FROM leaderboard ORDER BY score DESC LIMIT 3;";
 
@@ -71,17 +82,6 @@ public class ModelLeaderboard {
                 arrayList.add(s);
             }
             return arrayList;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void deleteLeaderboard(int id){
-        String cmd = "DELETE FROM leaderboard WHERE id = ?";
-
-        try(PreparedStatement preparedStatement = connection.prepareStatement(cmd)) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
