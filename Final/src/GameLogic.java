@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class GameLogic {
     public String runGame(String input) {
         String out = "";

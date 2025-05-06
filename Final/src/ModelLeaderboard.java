@@ -79,5 +79,24 @@ public class ModelLeaderboard {
             throw new RuntimeException(e);
         }
     }
+
+    public ArrayList<String> getTopThree(){
+        String cmd = "SELECT * FROM leaderboard ORDER BY score DESC LIMIT 3;";
+
+        try (Statement statement = connection.createStatement()) {
+            ResultSet rs = statement.executeQuery(cmd);
+            ArrayList<String> arrayList = new ArrayList<>();
+            while (rs.next()){
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                int score = rs.getInt("score");
+                String s = String.format("%3d %10s %3d", id, name, score);
+                arrayList.add(s);
+            }
+            return arrayList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 

@@ -75,7 +75,7 @@ public class Controller {
         if(choice.equals(gameInput)){
             balance += bet;
         } else {
-            balance -=bet;
+            balance -= bet;
         }
         view.viewGame.setCoinState(gameInput);
         view.viewGame.setBalance(balance);
@@ -86,7 +86,7 @@ public class Controller {
         int bet = Integer.parseInt(view.viewGame.getBetAmountText());
         String choice = view.viewGame.getSelectedDice();
         if(choice.equals(gameInput)){
-            balance += bet; //used to be times 6, shouldn't it just increase by bet if correct and decrease if incorrect?
+            balance += bet*6; //used to be times 6, shouldn't it just increase by bet if correct and decrease if incorrect?
         } else {
             balance -=bet;
         }
