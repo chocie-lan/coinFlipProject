@@ -73,21 +73,20 @@ public class Controller {
         int bet = Integer.parseInt(view.viewGame.getBetAmountText());
         String choice = view.viewGame.getSelected();
         if(choice.equals(gameInput)){
-            balance += bet*2;
+            balance += bet;
         } else {
             balance -=bet;
         }
         view.viewGame.setCoinState(gameInput);
         view.viewGame.setBalance(balance);
         printWriter.println(balance);
-
     }
 
     public void changeBalanceDice(String gameInput){
         int bet = Integer.parseInt(view.viewGame.getBetAmountText());
         String choice = view.viewGame.getSelectedDice();
         if(choice.equals(gameInput)){
-            balance += bet*6;
+            balance += bet; //used to be times 6, shouldn't it just increase by bet if correct and decrease if incorrect?
         } else {
             balance -=bet;
         }
@@ -115,13 +114,16 @@ public class Controller {
             intValue = Integer.parseInt(view.viewGame.getBetAmountText());
         } catch (NumberFormatException ex) {
             System.out.println("Please enter a number");
+            view.viewGame.message.setText("Please enter a number for your bet");
         }
         if (intValue > balance) {
             System.out.println("You don't have enough money for that!");
+            view.viewGame.message.setText("You don't have enough money for that!");
             return false;
         }
         else if (intValue < 0){
             System.out.println("Enter a positive value");
+            view.viewGame.message.setText("Enter a positive value");
             return false;
         }
         else {
@@ -136,7 +138,7 @@ public class Controller {
                 printWriter.println("login");
                 printWriter.println(view.viewLogin.getUsernameText());
                 printWriter.println(view.viewLogin.getPasswordText());
-            }else{
+            }else if(view.viewLogin.getUsernameText().isEmpty()){
                 System.out.println("Please enter a username and password!");
             }
         }
@@ -146,12 +148,11 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e){
             if(!view.viewLogin.getUsernameText().isEmpty() && !view.viewLogin.getPasswordText().isEmpty()){
-                System.out.println("SIGN UP BUTTON CLICKED");
                 printWriter.println("signup");
                 printWriter.println(view.viewLogin.getUsernameText());
                 printWriter.println(view.viewLogin.getPasswordText());
-            }else{
-                System.out.println("Please enter a username and password!");
+            }else if(view.viewLogin.getUsernameText().isEmpty()){
+                view.viewGame.message.setText("Please enter a username and password!");
             }
         }
     }
@@ -161,8 +162,8 @@ public class Controller {
         public void actionPerformed(ActionEvent e){
             if(!view.viewGame.getBetAmountText().isEmpty() && checkUserBet()) {
                 printWriter.println("flipCoin");
-            }else{
-                System.out.println("Please enter bet amount");
+            }else if(view.viewGame.getBetAmountText().isEmpty()){
+                view.viewGame.message.setText("Please enter bet amount");
             }
         }
     }
@@ -170,10 +171,9 @@ public class Controller {
     private static class diceButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+            view.viewGame.message.setText("");
             if(!view.viewGame.getBetAmountText().isEmpty() && checkUserBet()) {
                     printWriter.println("rollDice");
-            }else{
-                System.out.println("Please enter bet amount");
             }
         }
     }

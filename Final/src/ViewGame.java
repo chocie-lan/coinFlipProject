@@ -26,6 +26,8 @@ public class ViewGame extends JPanel {
     private JLabel balance;
     private JLabel balanceLabel;
 
+    JLabel message;
+
 
     public ViewGame(){
         setLayout(null);
@@ -51,6 +53,8 @@ public class ViewGame extends JPanel {
         betAmount = new JTextField(10);
         balance = new JLabel("Current Balance: ");
         balanceLabel = new JLabel("Current Balance: ");
+
+        message = new JLabel("");
 
     }
     public void initializeGameView(){
@@ -81,6 +85,7 @@ public class ViewGame extends JPanel {
         leaderboardList.setBounds(300,300, 100,100);
         balanceLabel.setBounds(300,10,100,20);
         leaderboardLabel.setBounds(300, 270, 100, 20);
+        message.setBounds(50, 350, 300,20);
 
         add(selector);
         add(coin);
@@ -94,6 +99,7 @@ public class ViewGame extends JPanel {
         add(diceState);
         add(leaderboardLabel);
         add(balanceLabel);
+        add(message);
     }
 
     public void updateLeaderboardList(ArrayList<String> top3){

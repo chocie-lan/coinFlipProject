@@ -12,6 +12,7 @@ public class ThreadMultiClient implements Runnable {
     GameLogic gamelogic = new GameLogic();
     PrintWriter printWriter = null;
     BufferedReader bufferedReader;
+    InputStreamReader inputStreamReader;
     private int threadNumber;
     private Socket clientSocket;
     String username = "user1";
@@ -21,7 +22,7 @@ public class ThreadMultiClient implements Runnable {
         this.clientSocket = clientSocket;
 
         try {
-            InputStreamReader inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
+            inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
             bufferedReader = new BufferedReader(inputStreamReader);
             printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
         } catch (IOException e) {
