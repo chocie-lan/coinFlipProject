@@ -37,7 +37,6 @@ public class ModelUser {
         }
     }
 
-
     public ArrayList<String> readUserTable(){
         String cmd = "SELECT * FROM userData;";
         try (Statement statement = connection.createStatement()) {

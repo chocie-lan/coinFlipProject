@@ -8,12 +8,15 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import static java.lang.Thread.sleep;
+
 public class Controller {
     private static int balance = 100;
     private static View view;
     static PrintWriter printWriter;
     static InputStreamReader inputStreamReader;
     static BufferedReader bufferedReader;
+
 
     public Controller(){
         view = new View();
@@ -86,7 +89,7 @@ public class Controller {
         int bet = Integer.parseInt(view.viewGame.getBetAmountText());
         String choice = view.viewGame.getSelectedDice();
         if(choice.equals(gameInput)){
-            balance += bet*6; //used to be times 6, shouldn't it just increase by bet if correct and decrease if incorrect?
+            balance += bet*5; //used to be times 6, shouldn't it just increase by bet if correct and decrease if incorrect?
         } else {
             balance -=bet;
         }
@@ -120,13 +123,14 @@ public class Controller {
             System.out.println("You don't have enough money for that!");
             view.viewGame.message.setText("You don't have enough money for that!");
             return false;
-        }
-        else if (intValue < 0){
+        } else if (intValue < 0){
             System.out.println("Enter a positive value");
             view.viewGame.message.setText("Enter a positive value");
             return false;
-        }
-        else {
+        } else if (balance == 0){
+            view.viewGame.message.setText("No more money, you lose!"); //fix so that it shows up as soon as balance is 0
+            return false;
+        } else {
             return true;
         }
     }
@@ -160,21 +164,42 @@ public class Controller {
     private static class coinFlipButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            if(!view.viewGame.getBetAmountText().isEmpty() && checkUserBet()) {
-                printWriter.println("flipCoin");
-            }else if(view.viewGame.getBetAmountText().isEmpty()){
-                view.viewGame.message.setText("Please enter bet amount");
+            try{
+                view.viewGame.getSelected();
+                view.viewGame.disableButtons();
+                if(!view.viewGame.getBetAmountText().isEmpty() && checkUserBet()) {
+                    printWriter.println("flipCoin");
+                }else if(view.viewGame.getBetAmountText().isEmpty()){
+                    view.viewGame.message.setText("Please enter bet amount");
+                }
+                view.viewGame.enableButtons();
+            } catch (Exception ex) {
+                System.out.println(ex);
+                view.viewGame.message.setText("Make a selection to bet on");
             }
         }
     }
 
     private static class diceButtonListener implements ActionListener{
         @Override
-        public void actionPerformed(ActionEvent e) {
-            view.viewGame.message.setText("");
-            if(!view.viewGame.getBetAmountText().isEmpty() && checkUserBet()) {
+        public void actionPerformed(ActionEvent e){
+            try{
+                view.viewGame.getSelectedDice();
+                view.viewGame.disableButtons();
+                view.viewGame.message.setText("");
+                if(!view.viewGame.getBetAmountText().isEmpty() && checkUserBet()) {
                     printWriter.println("rollDice");
+                }else if(view.viewGame.getBetAmountText().isEmpty()){
+                    view.viewGame.message.setText("Please enter bet amount");
+                }
+                view.viewGame.enableButtons();
+            } catch (Exception ex) {
+                System.out.println(ex);
+                view.viewGame.message.setText("Make a selection to bet on");
+                //print to view window??
+                //also dice needs to tell you to enter a bet amount
             }
         }
     }
+
 }

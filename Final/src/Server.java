@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Server {
-    private static int userId = 1;
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(5000);

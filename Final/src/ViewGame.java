@@ -106,6 +106,18 @@ public class ViewGame extends JPanel {
         leaderboard.removeAllElements();
         leaderboard.addAll(top3);
     }
+
+    //view.viewGame.coin.setEnabled(false); // make a function to disable coin/dice
+    public void disableButtons(){
+        coin.setEnabled(false);
+        dice.setEnabled(false);
+    }
+
+    public void enableButtons(){
+        coin.setEnabled(true);
+        dice.setEnabled(true);
+    }
+
     public String getSelectedDice(){
         return diceSelections.getElementAt(diceSelector.getSelectedIndex());
     }

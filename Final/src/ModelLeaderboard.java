@@ -11,7 +11,7 @@ public class ModelLeaderboard {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
+    } //need leaderboard to be live
 
     public void createLeaderboardTable(){
         String cmd = "CREATE TABLE IF NOT EXISTS leaderboard(" +
@@ -52,17 +52,6 @@ public class ModelLeaderboard {
                 arrayList.add(s);
             }
             return arrayList;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void deleteLeaderboard(int id){
-        String cmd = "DELETE FROM leaderboard WHERE id = ?";
-
-        try(PreparedStatement preparedStatement = connection.prepareStatement(cmd)) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
