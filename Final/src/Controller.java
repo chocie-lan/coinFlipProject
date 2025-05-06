@@ -7,6 +7,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Objects;
+
+//look at single responsibility more -> change in github
 
 public class Controller {
     private static int balance = 100;
@@ -18,13 +21,15 @@ public class Controller {
     public Controller(){
         System.out.println("hello from controller");
         view = new View();
-        view.setBalance(balance);
-        view.initializeGUI();
+        view.viewGame.setBalance(balance);
+        //view.initializeGUI();
+        view.viewGame.initializeGameView();
+        view.viewLogin.initializeLogin();
 
-        view.loginButtonListener(new LoginButtonListener());
-        view.coinFlipButtonListener(new coinFlipButtonListener());
-        view.signUpButtonListener(new signUpButtonListener());
-        view.diceButtonListener(new diceButtonListener());
+        view.viewLogin.loginButtonListener(new LoginButtonListener());
+        view.viewGame.coinFlipButtonListener(new coinFlipButtonListener());
+        view.viewLogin.signUpButtonListener(new signUpButtonListener());
+        view.viewGame.diceButtonListener(new diceButtonListener());
     }
 
     public void start() {
@@ -36,12 +41,16 @@ public class Controller {
             printWriter = new PrintWriter(socket.getOutputStream(), true);
 
             //Loop for login
-            while(true) {
+            while (true) {
                 String verify = bufferedReader.readLine();
                 if (verify.equals("failed")) {
-                    System.out.println("Incorrect username and password!");
-
-                } else if (verify.equals("success")){
+                    view.viewLogin.statusMessage.setText("Invalid login information, please sign up!");
+//                }else if(verify.equals("partial Match")){
+//                    System.out.println("Please verify password for "+ view.viewLogin.getUsernameText() + "or click sign up to make a new account");
+                }else if (verify.equals("success")) {
+                    //System.out.println("User accepted");
+                    view.viewLogin.statusMessage.setText("User Accepted!");
+                    view.cardLayout.show(view.cardPanel, "Game");
                     break;
                 }
             }
@@ -50,53 +59,50 @@ public class Controller {
             String gameInput;
             while(true){
                 gameInput = bufferedReader.readLine();
-                //System.out.println(gameInput);
-                if(!gameInput.equals(null) && (gameInput.equals("heads") || gameInput.equals("tails"))) {
+                if (!gameInput.equals(null) && (gameInput.equals("heads") || gameInput.equals("tails"))) {
                     changeBalanceCoin(gameInput);
                     getLeaderboard();
                 }
                 if (!gameInput.equals(null) && (gameInput.equals("1") || gameInput.equals("2")
                         || gameInput.equals("3") || gameInput.equals("4") || gameInput.equals("5")
-                        || gameInput.equals("6")  )) {
+                        || gameInput.equals("6"))) {
                     changeBalanceDice(gameInput);
                     getLeaderboard();
-
                 }
             }
-
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
     public void changeBalanceCoin(String gameInput) {
-        int bet = Integer.parseInt(view.getBetAmountText());
-        String choice = view.getSelected();
+        int bet = Integer.parseInt(view.viewGame.getBetAmountText());
+        String choice = view.viewGame.getSelected();
         if(choice.equals(gameInput)){
             balance += bet*2;
         } else {
             balance -=bet;
         }
-        view.setCoinState(gameInput);
-        view.setBalance(balance);
+        view.viewGame.setCoinState(gameInput);
+        view.viewGame.setBalance(balance);
         printWriter.println(balance);
 
     }
 
     public void changeBalanceDice(String gameInput){
-        int bet = Integer.parseInt(view.getBetAmountText());
-        String choice = view.getSelectedDice();
+        int bet = Integer.parseInt(view.viewGame.getBetAmountText());
+        String choice = view.viewGame.getSelectedDice();
         if(choice.equals(gameInput)){
             balance += bet*6;
         } else {
             balance -=bet;
         }
-        view.setCoinState(gameInput);
-        view.setBalance(balance);
+        view.viewGame.setCoinState(gameInput);
+        view.viewGame.setBalance(balance);
         printWriter.println(balance);
     }
-
     public void getLeaderboard(){
         ArrayList<String> top3 = new ArrayList<>();
         for (int j = 0; j < 3; j++) {
@@ -108,20 +114,17 @@ public class Controller {
                 System.out.println(e);
             }
         }
-        view.updateLeaderboardList(top3);
+        view.viewGame.updateLeaderboardList(top3);
     }
 
     private class LoginButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e){
-            if(!view.getUsernameText().isEmpty() && !view.getPasswordText().isEmpty()){
-                //System.out.println("LOGIN BUTTON CLICKED");
-                printWriter.println(view.getUsernameText());
-                printWriter.println(view.getPasswordText());
-                //check for record in database
-                //pass to server -> model -> DB
-                //if found, go to game tab
-                //else, ask them to sign up instead
+            if(!view.viewLogin.getUsernameText().isEmpty() && !view.viewLogin.getPasswordText().isEmpty()){
+                System.out.println("LOGIN BUTTON CLICKED");
+                printWriter.println("login");
+                printWriter.println(view.viewLogin.getUsernameText());
+                printWriter.println(view.viewLogin.getPasswordText());
             }else{
                 System.out.println("Please enter a username and password!");
             }
@@ -131,8 +134,11 @@ public class Controller {
     private static class signUpButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            if(!view.getUsernameText().isEmpty() && !view.getPasswordText().isEmpty()){
+            if(!view.viewLogin.getUsernameText().isEmpty() && !view.viewLogin.getPasswordText().isEmpty()){
                 System.out.println("SIGN UP BUTTON CLICKED");
+                printWriter.println("signup");
+                printWriter.println(view.viewLogin.getUsernameText());
+                printWriter.println(view.viewLogin.getPasswordText());
             }else{
                 System.out.println("Please enter a username and password!");
             }
@@ -142,12 +148,11 @@ public class Controller {
     private static class coinFlipButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            if(!view.getBetAmountText().isEmpty()) {
+            if(!view.viewGame.getBetAmountText().isEmpty()) {
                 int intValue = 0;
                 try {
-                    intValue = Integer.parseInt(view.getBetAmountText());
+                    intValue = Integer.parseInt(view.viewGame.getBetAmountText());
                 } catch (NumberFormatException ex) {
-                    //throw new RuntimeException(ex);
                     System.out.println("Please enter a number");
                     // do not allow them to flip the coin
                 }
@@ -157,7 +162,6 @@ public class Controller {
                 if(intValue < 0){
                     System.out.println("Enter a positive value");
                 }
-                //check if it is a positive integer
                 else {
                     System.out.println("COIN FLIP BUTTON CLICKED");
                     printWriter.println("flipCoin");
@@ -166,16 +170,17 @@ public class Controller {
             else{
                 System.out.println("Please enter a bet amount");
             }
-
         }
     }
+
     private static class diceButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(!view.getBetAmountText().isEmpty()) {
+            if(!view.viewGame.getBetAmountText().isEmpty()) {
                 int intValue = 0;
+                System.out.println("DICE BUTTON CLICKED");
                 try {
-                    intValue = Integer.parseInt(view.getBetAmountText());
+                    intValue = Integer.parseInt(view.viewGame.getBetAmountText());
                 } catch (NumberFormatException ex) {
                     //throw new RuntimeException(ex);
                     System.out.println("Please enter a number");
@@ -189,7 +194,7 @@ public class Controller {
                 }
                 //check if it is a positive integer
                 else {
-                   // System.out.println("DICE BUTTON CLICKED");
+                    // System.out.println("DICE BUTTON CLICKED");
                     printWriter.println("rollDice");
                 }
             }
@@ -198,6 +203,5 @@ public class Controller {
             }
         }
     }
-
 
 }

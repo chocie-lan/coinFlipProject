@@ -39,6 +39,7 @@ public class ModelUser {
         }
     }
 
+
     public ArrayList<String> readUserTable(){
         String cmd = "SELECT * FROM userData;";
         try (Statement statement = connection.createStatement()) {
@@ -49,7 +50,8 @@ public class ModelUser {
                 //int id = rs.getInt("id");
                 String name = rs.getString("username");
                 String password = rs.getString("password");
-                String s = String.format("%10s %10s",name, password);
+                //String s = String.format("%10s %10s",name, password);
+                String s = name + " " +password;
                 arrayList.add(s);
             }
             return arrayList;
